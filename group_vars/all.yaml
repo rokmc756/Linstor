@@ -1,0 +1,16 @@
+---
+# Ansible variables
+ansible_user: root
+ansible_ssh_private_key_file: ~/.ssh/ansible_key
+become: yes
+
+# LINSTOR variables
+drbd_backing_disk: /dev/nvme0n1
+drbd_replication_network: 192.168.2.0/24
+
+# LINBIT portal variables
+lb_user: ""
+lb_pass: ""
+lb_con_id: ""
+lb_clu_id: ""
+

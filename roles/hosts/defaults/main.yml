@@ -1,0 +1,32 @@
+rh_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr,lsof"
+rh_common_devel_pkgs: "git"
+
+
+rh7_common_devel_pkgs: "make,perl,tcl,tk,libnl"
+rh8_common_devel_pkgs: "make,perl,tcl,tk,libnl3"
+rh9_common_devel_pkgs: "make,perl,tcl,tk,libnl3,zfsutils-linux"
+
+
+suse_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr,lsof"
+suse_common_devel_pkgs: "git"
+suse15_common_devel_pkgs: "make,tcl,tk,zfsutils-linux"
+
+
+ubt_common_pkgs: "sshpass,s3cmd,cifs-utils,nfs-client,libnl-*,elfutils*,lsof,rpcbind,xfsprogs,jq,expect,ipvsadm,lvm2,python3-passlib,frr,lsof,sqlite3"
+ubt_common_devel_pkgs: "git,make,tcl,tk"
+
+
+ubt20_common_devel_pkgs: "perl"
+ubt22_common_devel_pkgs: "perl"
+ubt23_common_devel_pkgs: "perl"
+ubt24_common_devel_pkgs: "perl,zfsutils-linux,pdsh,qemu-system-x86-64"
+
+
+official_rh_pkgs: "pdsh"
+official_ubt_pkgs: "pdsh"
+official_suse_pkgs: "pdsh"
+
+
+update_cache: false
+upgrade_packages: false
+

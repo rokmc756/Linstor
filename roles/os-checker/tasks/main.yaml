@@ -1,0 +1,23 @@
+---
+# Set fact os vars for CentOS:
+- name: Get os_version from /etc/os-release
+  raw: "grep '^VERSION_ID=' /etc/os-release | sed s'/VERSION_ID=//'"
+  register: os_version
+  changed_when: False
+  when: ansible_os_family is not defined
+
+
+- name: Get Distro Name from /etc/os-release
+  raw: "grep '^NAME=' /etc/os-release | sed s'/NAME=//'"
+  register: distro
+  changed_when: False
+  when: ansible_os_family is not defined
+
+
+- name: Set fact ansible_os_family var to RedHat
+  set_fact:
+    ansible_os_family: RedHat
+  when:
+    - ansible_os_family is not defined
+    - "'CentOS' in distro.stdout"
+

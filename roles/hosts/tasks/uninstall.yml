@@ -1,0 +1,75 @@
+---
+- name: Rollback Default Group to /etc/sudoers File
+  lineinfile:
+    dest: /etc/sudoers
+    state: absent
+    regexp: '^%{{ sudo_user }}'
+    line: '%{{ sudo_user }}  ALL=(ALL)        ALL'
+  ignore_errors: true
+
+
+- name: Remove Bash_History and .ssh Directory
+  file:
+    path: "{{ item }}"
+    state: absent
+  ignore_errors: true
+  with_items:
+    - "/root/.bash_history"
+    - "/home/{{ sudo_user }}/.bash_history"
+    - "/root/.ssh"
+    - "/home/{{ sudo_user }}/.ssh"
+
+
+- name: Remove Hostname Entries in /etc/hosts File
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ domain_name }}"
+    line: "{{ hostvars[ item ][ _netdev ][ 'ipv4' ][ 'address' ] }} {{ item }}"
+    state: absent
+    backup: yes
+  register: hosts_deleted
+  ignore_errors: true
+  when: hostvars[ item ][ 'ansible_'~netdev0 ]['ipv4']['address'] is defined
+  with_items: "{{ groups['workers'] }}"
+
+
+- name: Delete "{{ sudo_user }}" User and Group
+  user:
+    name: "{{ sudo_user }}"
+    state: absent
+  ignore_errors: true
+  #  group: "{{ sudo_group }}"
+
+
+- name: Uninstall Prerequest Software Packages
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ install_pkgs }}"
+  ignore_errors: true
+
+
+- name: Disable Development Package Repository
+  shell: |
+    dnf config-manager --set-disabled {{ item }}
+  with_items:
+    - "crb"
+    - "devel"
+  ignore_errors: true
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+
+
+- name: Disable Incus Package Repositories
+  shell: |
+    dnf copr disable neil/incus -y
+  ignore_errors: true
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+
+
+- name: Uninstall YUM or DNF Config Manager and EPEL
+  package: name={{ item }} state=absent
+  with_items:
+    - "epel-release"
+    - "dnf-utils"
+  ignore_errors: true
+

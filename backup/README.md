@@ -19,17 +19,17 @@ Add the target system information into the inventory file named `hosts.ini`.
 For example:
 ```
 [controller]
-192.168.1.173
+192.168.35.12
 
 [satellite]
-192.168.1.[171:172]
+192.168.35.[10:11]
 
 [linstor_cluster:children]
 controller
 satellite
 
 [linstor_storage_pool]
-192.168.1.[171:172]
+192.168.35.[10:11]
 ```
 
 You can add a `controller` node to the `satellite` node group which will
@@ -49,7 +49,7 @@ become: yes
 
 # LINSTOR variables
 drbd_backing_disk: /dev/sdb
-drbd_replication_network: 192.168.2.0/24
+drbd_replication_network: 192.168.222.0/24
 
 # LINBIT portal variables
 lb_user: "lbportaluser"
