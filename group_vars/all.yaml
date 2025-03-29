@@ -1,35 +1,30 @@
 ---
-# Ansible variables
-# ansible_user: root
-
 ansible_ssh_pass: "changeme"
 ansible_become_pass: "changeme"
-
 ansible_ssh_private_key_file: ~/.ssh/ansible_key
-become: yes
+# become: yes
 
 # LINSTOR variables
 drbd_backing_disk: /dev/nvme0n1
-drbd_replication_network: 192.168.2.0/24
+drbd_replication_network: 192.168.1.0/24
 
-# LINBIT portal variables
+# LINBIT Portal Variables
 lb_user: ""
 lb_pass: ""
 lb_con_id: ""
 lb_clu_id: ""
 
-
 _linstor:
-  project_name: squid  # reef
+  project_name: linbit
   os_version: el9
   domain: "jtest.futurfusion.io"
   rdomain: "io.futurfusion.jtest"
   cluster_name: jack-kr-linstor
-  major_version: "19"
-  minor_version: "2"
-  build_version: "0"
-  patch_version: ""
-  download_url: ""
+  major_version: "1"
+  minor_version: "30"
+  build_version: "4"
+  patch_version: "1"
+  download_url: "https://linbit.gateway.scarf.sh/downloads"
   download: false
   base_path: /root
   admin_user: admin

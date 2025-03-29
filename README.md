@@ -117,3 +117,7 @@ For more information on LINSTOR - such as instructions for Kubernetes,
 OpenStack, Docker, or other integration - refer to
 [LINBIT's LINSTOR documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
 
+
+## Linstor: concepts and configuration
+https://brian-candler.medium.com/linstor-concepts-and-configuration-e5b0c8e10d27
+
