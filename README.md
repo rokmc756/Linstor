@@ -1,3 +1,6 @@
+## WIP
+Need to access package linstor repository
+
 # LINSTOR Ansible Playbook
 
 Build a LINSTOR® cluster using Ansible. If you're unfamiliar with LINSTOR,
@@ -70,6 +73,13 @@ production systems to limit network traffic congestion, but it's not a hard requ
 When ready, run the `site.yaml` playbook:
 
 ```sh
+make linstor r=prepare
+make controller r=install
+make satellite r=install
+make storage r=install
+
+make storage r=uninstall
+
 ansible-playbook site.yaml
 ```
 

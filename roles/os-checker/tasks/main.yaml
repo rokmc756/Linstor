@@ -4,6 +4,7 @@
   raw: "grep '^VERSION_ID=' /etc/os-release | sed s'/VERSION_ID=//'"
   register: os_version
   changed_when: False
+  tags: prepare
   when: ansible_os_family is not defined
 
 
@@ -11,12 +12,14 @@
   raw: "grep '^NAME=' /etc/os-release | sed s'/NAME=//'"
   register: distro
   changed_when: False
+  tags: prepare
   when: ansible_os_family is not defined
 
 
 - name: Set fact ansible_os_family var to RedHat
   set_fact:
     ansible_os_family: RedHat
+  tags: prepare
   when:
     - ansible_os_family is not defined
     - "'CentOS' in distro.stdout"

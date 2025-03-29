@@ -55,7 +55,7 @@
   shell: "ssh-keyscan -t rsa {{ item }} >> ~/.ssh/known_hosts"
   register: ssh_root_fingerprint_add
   with_items:
-    - "{{ groups['workers'] }}"
+    - "{{ groups['all'] }}"
 
 
 - name: Generate SSH Key of Root User on Local Machine
@@ -72,7 +72,7 @@
   shell: "sshpass -p \"{{ root_user_pass }}\" ssh-copy-id -i ~/.ssh/{{ ssh_key_filename }}.pub \"root@{{ item }}\""
   register: ssh_copy_root_id_execution
   with_items:
-    - "{{ groups['workers'] }}"
+    - "{{ groups['all'] }}"
   failed_when:
     - ssh_copy_root_id_execution.rc != 0
 
@@ -95,8 +95,8 @@
   shell: |
     sshpass -p "changeme" ssh-copy-id -f -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub root@{{ hostvars[item][_netdev]['ipv4']['address'] }}
   register: ssh_copy_id_keys
-  with_items: "{{ groups['workers'] }}"
+  with_items: "{{ groups['all'] }}"
   delegate_to: localhost
   failed_when: ssh_copy_id_keys.rc != 0
-  when: inventory_hostname in hostvars[groups['workers'][0]].ansible_hostname
+  when: inventory_hostname in hostvars[groups['all'][0]].ansible_hostname
 

@@ -1,6 +1,10 @@
 ---
 # Ansible variables
-ansible_user: root
+# ansible_user: root
+
+ansible_ssh_pass: "changeme"
+ansible_become_pass: "changeme"
+
 ansible_ssh_private_key_file: ~/.ssh/ansible_key
 become: yes
 
@@ -13,4 +17,61 @@ lb_user: ""
 lb_pass: ""
 lb_con_id: ""
 lb_clu_id: ""
+
+
+_linstor:
+  project_name: squid  # reef
+  os_version: el9
+  domain: "jtest.futurfusion.io"
+  rdomain: "io.futurfusion.jtest"
+  cluster_name: jack-kr-linstor
+  major_version: "19"
+  minor_version: "2"
+  build_version: "0"
+  patch_version: ""
+  download_url: ""
+  download: false
+  base_path: /root
+  admin_user: admin
+  admin_passwd: changeme
+  bin_type: tar
+  nvme: true
+  net:
+    conn: "dpdk"                     # dpdk or udp
+    gateway: "192.168.1.1"
+    ha1: 1
+    ha2: 2
+    type: "virtual"                  # or physical
+    ipaddr0: "192.168.0.17"
+    ipaddr1: "192.168.1.17"
+    ipaddr2: "192.168.2.17"
+  backend:
+    net:
+      type: "virtual"                # or physical
+      ipaddr0: "192.168.0.17"
+      ipaddr1: "192.168.1.17"
+      ipaddr2: "192.168.2.17"
+  client:
+    net:
+      type: "virtual"                # or physical
+      cores: 1
+      ipaddr0: "192.168.0.17"
+      ipaddr1: "192.168.1.17"
+      ipaddr2: "192.168.2.17"
+  incus:
+    net:
+      ipaddr0: "192.168.0.8"
+      ipaddr1: "192.168.1.8"
+      ipaddr2: "192.168.2.8"
+
+
+vms:
+  rk9: [ "rk9-freeipa", "rk9-node01", "rk9-node02", "rk9-node03", "rk9-node04", "rk9-node05", "rk9-node06" ]
+  ubt24: [ "rk9-freeipa", "ubt24-node01", "ubt24-node02", "ubt24-node03", "ubt24-node04", "ubt24-node05", "ubt24-node06" ]
+
+
+vmware:
+  esxi_hostname: "192.168.0.231"
+  esxi_username: "root"
+  esxi_password: "Changeme34#$"
 

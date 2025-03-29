@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: yes
+  become_user: root
+  become: yes
+  roles:
+    - { role: os-checker }
+    - { role: pre-install }
+

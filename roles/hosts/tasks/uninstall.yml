@@ -30,7 +30,7 @@
   register: hosts_deleted
   ignore_errors: true
   when: hostvars[ item ][ 'ansible_'~netdev0 ]['ipv4']['address'] is defined
-  with_items: "{{ groups['workers'] }}"
+  with_items: "{{ groups['all'] }}"
 
 
 - name: Delete "{{ sudo_user }}" User and Group
@@ -59,17 +59,21 @@
   when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
 
 
-- name: Disable Incus Package Repositories
-  shell: |
-    dnf copr disable neil/incus -y
-  ignore_errors: true
-  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
-
-
 - name: Uninstall YUM or DNF Config Manager and EPEL
   package: name={{ item }} state=absent
   with_items:
     - "epel-release"
     - "dnf-utils"
   ignore_errors: true
+
+
+- name: Delete Linstor Reepository
+  file:
+    path: "/etc/yum.repos.d/{{ item }}.repo"
+    state: absent
+  with_items:
+    - "drbd-9"
+    - "drbd-proxy-3.2"
+    - "drbd-proxy-4"
+    - "pacemaker-2"
 

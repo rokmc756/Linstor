@@ -1,19 +1,4 @@
 ---
-- name: Install YUM or DNF Config Manager and EPEL
-  package: name={{ item }} state=present
-  with_items:
-    - "dnf-utils"
-    - "epel-release"
-  ignore_errors: true
-  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
-
-
-- name: Enable Incus Package Repositories
-  shell: |
-    dnf copr enable neil/incus -y
-  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
-
-
 - name: Enable Package Repositories
   shell: |
     dnf config-manager --set-enabled {{ item }}
@@ -23,9 +8,31 @@
   when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
 
 
+- name: Install YUM or DNF Config Manager and EPEL
+  package: name={{ item }} state=present
+  with_items:
+    - "dnf-utils"
+    - "epel-release"
+  ignore_errors: true
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+
+
 - name: Install Prerequest Software Packages
   package: name={{ item }} state=present
   with_items: "{{ install_pkgs }}"
+
+
+- name: Add Linstor Reepository
+  yum_repository:
+    name: "{{ item }}"
+    description: Linbit Repository for Linstor
+    baseurl: "https://packages.linbit.com/yum/rhel9/{{ item }}/x86_64/"
+    enabled: yes
+  with_items:
+    - "drbd-9"
+    - "drbd-proxy-3.2"
+    - "drbd-proxy-4"
+    - "pacemaker-2"
 
 
 - name: Add the Inventory into /etc/hosts
@@ -49,7 +56,7 @@
     state: present
     password: "{{ 'changeme' | password_hash('sha512','A512') }}"
     shell: /bin/bash
-    groups: "{{ sudo_group }},incus-admin"
+    groups: "{{ sudo_group }}"
     createhome: yes
     home: "/home/{{ sudo_user }}"
 
@@ -75,7 +82,7 @@
 - name: Add User to 'sudo' Group (Debian)
   user:
     name: "{{ sudo_user }}"
-    groups: sudo,incus-admin
+    groups: sudo
     append: true
     state: present
     createhome: true

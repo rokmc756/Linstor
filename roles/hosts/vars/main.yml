@@ -5,8 +5,8 @@
 # sudo_group: "jomoon"
 # local_sudo_user: "jomoon"
 
-sudo_user: "incus"
-sudo_group: "incus-admin"
+sudo_user: "linstor"
+sudo_group: "linstor"
 
 local_sudo_user: "jomoon"
 wheel_group: "wheel"            # RHEL / CentOS / Rocky / SUSE / OpenSUSE

@@ -1,0 +1,4 @@
+---
+lb_rpm_pkgs: ["kmod-drbd", "drbd", "linstor-controller", "linstor-satellite", "linstor-client", "python-linstor"]
+lb_deb_pkgs: ["drbd-dkms", "drbd-utils", "linstor-controller", "linstor-satellite", "linstor-client", "python-linstor"]
+
