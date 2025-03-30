@@ -1,33 +1,88 @@
 ---
-- name: Delete the Storage Pool for lvm-thin
+#- name: Delete the Storage Pool for lvm-thin
+#  shell: |
+#    linstor storage-pool delete lvmthin {{ ansible_nodename }} lvm-thin
+#  register: storage_pool_delete_result
+#  failed_when: ( storage_pool_delete_result.rc not in [ 0, 10 ] )
+#
+#
+#- name: Delete Thin LVM on DRBD Pool
+#  lvol:
+#    vg: drbdpool
+#    thinpool: thinpool
+#    state: absent
+#    force: true
+#    # size: 50%VG
+#
+#
+#- name: Inactive DRBD Pool Volume Group for LINSTOR
+#  lvg:
+#    vg: drbdpool
+#    pvs: "{{ drbd_backing_disk }}"
+#    force: true
+#    state: inactive
+#
+#
+#- name: Remove DRBD Pool Volume Group for LINSTOR
+#  lvg:
+#    vg: drbdpool
+#    pvs: "{{ drbd_backing_disk }}"
+#    force: true
+#    state: absent
+
+
+- name: Delete the Storage Pool for
   shell: |
-    linstor storage-pool delete lvmthin {{ ansible_nodename }} lvm-thin
+    linstor storage-pool delete {{ ansible_nodename }} nvme_pool
   register: storage_pool_delete_result
   failed_when: ( storage_pool_delete_result.rc not in [ 0, 10 ] )
 
 
-- name: Delete Thin LVM on DRBD Pool
-  lvol:
-    vg: drbdpool
-    thinpool: thinpool
-    state: absent
-    force: true
-    # size: 50%VG
+
+# linstor resource list
+# linstor resource delete rk9-node03 incus-volume-4c12b5c581f1431988c118ce32779cae
+# linstor resource delete rk9-node02 incus-volume-4c12b5c581f1431988c118ce32779cae
+# linstor resource list
 
 
-- name: Inactive DRBD Pool Volume Group for LINSTOR
-  lvg:
-    vg: drbdpool
-    pvs: "{{ drbd_backing_disk }}"
-    force: true
-    state: inactive
+# linstor resource-group list
+#╭─────────────────────────────────────────────────────────────────────────────────────╮
+#┊ ResourceGroup ┊ SelectFilter             ┊ VlmNrs ┊ Description                     ┊
+#╞═════════════════════════════════════════════════════════════════════════════════════╡
+#┊ DfltRscGrp    ┊ PlaceCount: 2            ┊        ┊                                 ┊
+#╞┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╡
+#┊ rk9-node01    ┊ PlaceCount: 2            ┊        ┊ Resource group managed by Incus ┊
+#┊               ┊ StoragePool(s): lvm-thin ┊        ┊                                 ┊
+#╰─────────────────────────────────────────────────────────────────────────────────────╯
+#
+# linstor resource-group delete rk9-node01
+# ERROR:
+# Description:
+#     Cannot delete resource group 'rk9-node01' because it has existing resource definitions.
+# Details:
+#     Resource group: rk9-node01
 
 
-- name: Remove DRBD Pool Volume Group for LINSTOR
-  lvg:
-    vg: drbdpool
-    pvs: "{{ drbd_backing_disk }}"
-    force: true
-    state: absent
+# linstor resource-definition list
+#╭──────────────────────────────────────────────────────────────────────────────╮
+#┊ ResourceName                                  ┊ Port ┊ ResourceGroup ┊ State ┊
+#╞══════════════════════════════════════════════════════════════════════════════╡
+#┊ incus-volume-4c12b5c581f1431988c118ce32779cae ┊ 7000 ┊ rk9-node01    ┊ ok    ┊
+#╰──────────────────────────────────────────────────────────────────────────────╯
+#
+# linstor resource-definition delete incus-volume-4c12b5c581f1431988c118ce32779cae
+# SUCCESS:
+# Description:
+#    Resource definition 'incus-volume-4c12b5c581f1431988c118ce32779cae' deleted.
+# Details:
+#    Resource definition 'incus-volume-4c12b5c581f1431988c118ce32779cae' UUID was: 5cbcab9a-2845-4b35-8e87-bdb7e49356e6
+# linstor resource-definition list
+#╭─────────────────────────────────────────────╮
+#┊ ResourceName ┊ Port ┊ ResourceGroup ┊ State ┊
+#╞═════════════════════════════════════════════╡
+#╰─────────────────────────────────────────────╯
 
+
+# incus storage delete rk9-node01
+# Storage pool rk9-node01 deleted
 

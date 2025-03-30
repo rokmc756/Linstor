@@ -73,21 +73,21 @@
 - name: Join LINSTOR Cluster as Satellite Node
   shell: |
     linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} \
-    --node-type Satellite
+    --node-type satellite
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
 
 
-- name: Create thin File Backed Storage Pool Directory
-  file:
-    path: /var/lib/linstor/file-thin-storage-pool
-    state: directory
-    mode: '0755'
+#- name: Create thin File Backed Storage Pool Directory
+#  file:
+#    path: /var/lib/linstor/file-thin-storage-pool
+#    state: directory
+#    mode: '0755'
 
 
-- name: Create the Storage Pool for File-Thin
-  shell: |
-    linstor storage-pool create filethin {{ ansible_nodename }} file-thin /var/lib/linstor/file-thin-storage-pool
-  register: storage_pool_create_result
-  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
+#- name: Create the Storage Pool for File-Thin
+#  shell: |
+#    linstor storage-pool create filethin {{ ansible_nodename }} file-thin /var/lib/linstor/file-thin-storage-pool
+#  register: storage_pool_create_result
+#  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
 

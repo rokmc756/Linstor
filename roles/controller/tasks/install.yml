@@ -62,7 +62,7 @@
 - name: Initialize the LINSTOR Control Node as Pure Controller
   shell: |
     linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} \
-    --node-type Controller
+    --node-type controller
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
   when: "'satellite' not in group_names"
@@ -71,7 +71,7 @@
 - name: Initialize the LINSTOR Control Node as a Combined Type
   shell: |
     linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} \
-    --node-type Combined
+    --node-type combined
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
   when: "'satellite' in group_names"
