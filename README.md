@@ -11,17 +11,46 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 ![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
 
 
-## LINSTOR Ansible Playbook
-Build a LINSTOR® Cluster using Ansible. If you're unfamiliar with LINSTOR, please refer to the
+## Linstor Ansible Playbook
+This Ansible Playbook provide the feature to build a Linstor Cluster on Baremetal, Virtual Machines.
+The main purposes of this project are simple to deploy Linstor Cluster quickly and learn knowleges about it.
+If you're unfamiliar with Linstor, please refer to the
 [Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
-of the LINSTOR user's guide on https://linbit.com to learn more.
+of the Linstor user's guide on https://linbit.com to learn more.
 
 System requirements:
-  - An account at https://my.linbit.com (contact sales@linbit.com) or individual baremetal or virtual machines
   - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
   - All target systems must have passwordless SSH access.
   - All hostnames used in the inventory file are resolvable (or use IP addresses).
   - Target systems are Ubuntu 24.04 currently verified (or compatible variants).
+  - MacOS or Linux(or WSL) should have installed ansible as ansible host.
+  - Supported OS for ansible target host should be prepared with package repository configured such as yum, dnf and apt
+  - At least a Normal User which has Sudo Privileges
+
+
+## Prepare ansible host to run this playbook
+* MacOS
+```!yaml
+$ xcode-select --install
+$ brew install ansible
+$ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+```
+
+
+## Where is it originated?
+It has been developing based on the following project - https://github.com/LINBIT/linstor-ansible.
+Since above project is not useful to me I modified it with make utility and uninstall tasks for controller/satellite/storage.
+
+
+## Verified Linstor Version
+* Linstor 1.30.x
+
+
+## Supported Platform and OS
+* Virtual Machines
+* Baremetal
+* Ubuntu 24.x
+
 
 ## Usage
 Add the target system information into the inventory file named `ansible-hosts-ubt24`.
@@ -136,8 +165,8 @@ linstor resource list
 You should now have a DRBD device provisioned on a node in your cluster that you
 can use as you would any other block device.
 
-## Reference
 
+## Reference
 For more information on LINSTOR - such as instructions for Kubernetes,
 OpenStack, Docker, or other integration - refer to
 [LINBIT's LINSTOR documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
