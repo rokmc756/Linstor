@@ -58,10 +58,10 @@ _linstor:
       ipaddr1: "192.168.1.8"
       ipaddr2: "192.168.2.8"
   storage:
-    - { incus_storage_pool_name: "incus_lvmthin_pool01",  storage_pool: 'lvmthin_pool01',  pool_name: 'lvmthin_pool01',  storage_dev: '/dev/nvme0n1', type: 'lvmthin' }
-    - { incus_storage_pool_name: "incus_zfsthin_pool02",  storage_pool: 'zfsthin_pool02',  pool_name: 'zfsthin_pool02',  storage_dev: '/dev/nvme0n2', type: 'zfsthin' }
-    - { incus_storage_pool_name: "incus_lvm_pool01",      storage_pool: 'lvm_pool01',      pool_name: 'lvm_pool01',      storage_dev: '/dev/sdb',     type: 'lvm' }
-    - { incus_storage_pool_name: "incus_zfs_pool02",      storage_pool: 'zfs_pool02',      pool_name: 'zfs_pool02',      storage_dev: '/dev/sdc',     type: 'zfs' }
+    - { storage_pool: 'lvmthin_pool01',  pool_name: 'lvmthin_pool01',  storage_dev: '/dev/nvme0n1', type: 'lvmthin' }
+    - { storage_pool: 'zfsthin_pool02',  pool_name: 'zfsthin_pool02',  storage_dev: '/dev/nvme0n2', type: 'zfsthin' }
+    - { storage_pool: 'lvm_pool01',      pool_name: 'lvm_pool01',      storage_dev: '/dev/sdb',     type: 'lvm' }
+    - { storage_pool: 'zfs_pool02',      pool_name: 'zfs_pool02',      storage_dev: '/dev/sdc',     type: 'zfs' }
     # provider_kind: invalid choice: 'file' (choose from 'lvm', 'lvmthin', 'zfs', 'zfsthin', 'spdk')"], "stdout": "", "stdout_lines": []}
     # Type : diskless, ebs_initiator, exos, file, filethin, lvm(ok), lvmthin(ok), remotespdk, spdk, storagespaces, storagespacesthin, zfs(ok), zfsthin(ok)
   vms:
