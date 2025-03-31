@@ -9,8 +9,18 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 
 
 ## Linstro Storage Architecture
-![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg)
-![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
+
+<p align="center">
+<img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg" width="70%" height="70%">
+</p>
+
+<p align="center">
+<img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png" width="70%" height="70%">
+</p>
+
+<p align="center">
+<img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png" width="70%" height="70%">
+</p>
 
 
 ## Linstor Ansible Playbook
