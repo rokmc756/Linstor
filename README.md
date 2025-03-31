@@ -124,7 +124,7 @@ or
 make cluster r=clean
 ```
 
-## Install Linstor Controller
+## Install or Uninstall Linstor Controller
 ```sh
 make controller r=install
 
@@ -132,7 +132,7 @@ or
 make controller r=uninstall
 ```
 
-## Install Linstor Satellite
+## Install or Uninstall Linstor Satellite
 ```sh
 make satellite r=install
 
@@ -140,7 +140,7 @@ or
 make satellite r=uninstall
 ```
 
-## Install Linstor Storage Pools
+## Install or Uninstall Linstor Storage Pools
 ```sh
 make storage r=install
 
@@ -173,6 +173,6 @@ OpenStack, Docker, or other integration - refer to
 [LINBIT's LINSTOR documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
 
 
-## Linstor: concepts and configuration
+## Linstor: Concepts and Configuration
 https://brian-candler.medium.com/linstor-concepts-and-configuration-e5b0c8e10d27
 
