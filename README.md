@@ -18,27 +18,31 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png" width="70%" height="70%">
 </p>
-- LINBIT SDS manages various open source block storage technologies commonly found in modern Linux distributions to apply enterprise grade features such as encryption at rest, caching, and deduplication to storage volumes across storage clusters.
-- The LINBIT SDS software consists of a single Linstor controller service, and usually many Linstor satellite service instances running within a cluster of nodes.
-- The node running the Linstor controller service is responsible for managing the Linstor cluster configurations and orchestrating operations to be carried out on the nodes running a Linstor satellite service instance.
-- Linstor satellite nodes in the cluster either provide or access Linstor managed storage directly.
-- Satellites are also responsible for provisioning logical volumes and layering block storage technologies, as instructed by the user through configurations made against the Linstor controller.
-- Most LINBIT SDS users are interested in using Linstor to manage DRBD devices, enabling synchronous and asynchronous replication, in their block storage.
-- Once you’ve added physical devices to a LINBIT SDS cluster node, whether that node is a physical or virtual server in your local data center or a virtual server in the AWS cloud, management of the device and any logical volumes created from it are now handled from a single unified management plane – the Linstor controller node. The same is true for monitoring the block storage.
-- LINBIT SDS exposes metrics about the cluster and the storage resources it manages which can be scraped by Prometheus which enables you to monitor storage across a hybrid cloud environment in a uniform manner. The LINBIT GUI for Linstor also offers users a single-pane of glass for observing and managing storage resources in the cluster.
+
+X:
+  - LINBIT SDS manages various open source block storage technologies commonly found in modern Linux distributions to apply enterprise grade features such as encryption at rest, caching, and deduplication to storage volumes across storage clusters.
+  - The LINBIT SDS software consists of a single Linstor controller service, and usually many Linstor satellite service instances running within a cluster of nodes.
+  - The node running the Linstor controller service is responsible for managing the Linstor cluster configurations and orchestrating operations to be carried out on the nodes running a Linstor satellite service instance.
+  - Linstor satellite nodes in the cluster either provide or access Linstor managed storage directly.
+  - Satellites are also responsible for provisioning logical volumes and layering block storage technologies, as instructed by the user through configurations made against the Linstor controller.
+  - Most LINBIT SDS users are interested in using Linstor to manage DRBD devices, enabling synchronous and asynchronous replication, in their block storage.
+  - Once you’ve added physical devices to a LINBIT SDS cluster node, whether that node is a physical or virtual server in your local data center or a virtual server in the AWS cloud, management of the device and any logical volumes created from it are now handled from a single unified management plane – the Linstor controller node. The same is true for monitoring the block storage.
+  - LINBIT SDS exposes metrics about the cluster and the storage resources it manages which can be scraped by Prometheus which enables you to monitor storage across a hybrid cloud environment in a uniform manner. The LINBIT GUI for Linstor also offers users a single-pane of glass for observing and managing storage resources in the cluster.
 
 ### Exos Integration
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png" width="70%" height="70%">
 </p>
-- The Exos storage manager from Seagate could be configured as one large block device managed by Linstor® such as a local drive, but this would prevent concurrent sharing of Linstor resources between multiple servers out of the same pool.
-- Linstor integration with Exos enables multiple server nodes to allocate and connect to Linstor resources serviced by the same Exos pool.
-- Therefore all of the Exos storage management features such as SSD/HDD tiering, SSD caching, snapshots, and thin provisioning are available for Linstor resources and Kubernetes Storage Classes.
-- After configuration, Linstor will dynamically map Resource replicas as LUNs presented to server nodes through one of the two Exos controllers.
-- Since the Exos controllers are managed by a secure network API, Linstor must be configured with proper networking and username and password combination.
-- The diagram below is showing the relationship between Linstor cluster and Exos Enclosures.
-- Load balancing and server failover are managed & enabled by Linstor while volume creation is handled by the Exos hardware RAID engine.
-- The Exos storage provider in Linstor offers native integration with Exos’ REST-API.
+
+Y:
+  - The Exos storage manager from Seagate could be configured as one large block device managed by Linstor® such as a local drive, but this would prevent concurrent sharing of Linstor resources between multiple servers out of the same pool.
+  - Linstor integration with Exos enables multiple server nodes to allocate and connect to Linstor resources serviced by the same Exos pool.
+  - Therefore all of the Exos storage management features such as SSD/HDD tiering, SSD caching, snapshots, and thin provisioning are available for Linstor resources and Kubernetes Storage Classes.
+  - After configuration, Linstor will dynamically map Resource replicas as LUNs presented to server nodes through one of the two Exos controllers.
+  - Since the Exos controllers are managed by a secure network API, Linstor must be configured with proper networking and username and password combination.
+  - The diagram below is showing the relationship between Linstor cluster and Exos Enclosures.
+  - Load balancing and server failover are managed & enabled by Linstor while volume creation is handled by the Exos hardware RAID engine.
+  - The Exos storage provider in Linstor offers native integration with Exos’ REST-API.
 
 
 ## Linstor Ansible Playbook
