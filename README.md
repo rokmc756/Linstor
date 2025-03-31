@@ -13,12 +13,14 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg" width="70%" height="70%">
 </p>
+
 ### Abstracting block storage
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png" width="70%" height="70%">
 </p>
 LINBIT SDS manages various open source block storage technologies commonly found in modern Linux distributions to apply enterprise grade features such as encryption at rest, caching, and deduplication to storage volumes across storage clusters. The LINBIT SDS software consists of a single LINSTOR controller service, and usually many LINSTOR satellite service instances running within a cluster of nodes. The node running the LINSTOR controller service is responsible for managing the LINSTOR cluster configurations and orchestrating operations to be carried out on the nodes running a LINSTOR satellite service instance. LINSTOR satellite nodes in the cluster either provide or access LINSTOR managed storage directly. Satellites are also responsible for provisioning logical volumes and layering block storage technologies, as instructed by the user through configurations made against the LINSTOR controller. Most LINBIT SDS users are interested in using LINSTOR to manage DRBD devices, enabling synchronous and asynchronous replication, in their block storage.
 Once you’ve added physical devices to a LINBIT SDS cluster node, whether that node is a physical or virtual server in your local data center or a virtual server in the AWS cloud, management of the device and any logical volumes created from it are now handled from a single unified management plane – the LINSTOR controller node. The same is true for monitoring the block storage. LINBIT SDS exposes metrics about the cluster and the storage resources it manages which can be scraped by Prometheus which enables you to monitor storage across a hybrid cloud environment in a uniform manner. The LINBIT GUI for LINSTOR also offers users a single-pane of glass for observing and managing storage resources in the cluster.
+
 ### Exos Integration
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png" width="70%" height="70%">
