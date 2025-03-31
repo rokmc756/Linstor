@@ -14,7 +14,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg" width="70%" height="70%">
 </p>
 
-`**The Linstor system consists of multiple server and client components**`:
+**`The Linstor system consists of multiple server and client components`**:
   - A Linstor controller manages the configuration of the Linstor cluster and all its managed storage resources.
   - The Linstor satellite component manages the creation, modification, and deletion of storage resources on each node that provides or uses Linstor-managed storage resources.
   - All communication between Linstor components use Linstor’s network protocol, based on TCP/IP network connections.
@@ -27,7 +27,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png" width="70%" height="70%">
 </p>
 
-`**Linstor SDS**`:
+**`Linstor SDS`**:
   - It manages various open source block storage technologies commonly found in modern Linux distributions to apply enterprise grade features such as encryption at rest, caching, and deduplication to storage volumes across storage clusters.
   - It consists of a single controller service, and usually many satellite service instances running within a cluster of nodes.
   - The node running the controller service is responsible for managing the cluster configurations and orchestrating operations to be carried out on the nodes running a satellite service instance.
@@ -44,7 +44,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png" width="70%" height="70%">
 </p>
 
-`**Exos Storage**`:
+**`Exos Storage`**:
   - The Exos storage manager from Seagate could be configured as one large block device managed by Linstor such as a local drive, but this would prevent concurrent sharing of Linstor resources between multiple servers out of the same pool.
   - Linstor integration with Exos enables multiple server nodes to allocate and connect to Linstor resources serviced by the same Exos pool.
   - Therefore all of the Exos storage management features such as SSD/HDD tiering, SSD caching, snapshots, and thin provisioning are available for Linstor resources and Kubernetes Storage Classes.
@@ -62,7 +62,7 @@ If you're unfamiliar with Linstor, please refer to the
 [Introduction to Linstor section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the Linstor user's guide on https://linbit.com to learn more.
 
-`**System requirements**`:
+**`System requirements`**:
   - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
   - All target systems must have passwordless SSH access.
   - All hostnames used in the inventory file are resolvable (or use IP addresses).
