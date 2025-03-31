@@ -9,6 +9,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 
 
 ## Linstro Storage Architecture
+![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg)
 ![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
 
 
