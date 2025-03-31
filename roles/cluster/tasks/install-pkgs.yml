@@ -1,30 +1,10 @@
 ---
-- name: Fetch the latest linbit-manage-node.py
-  get_url:
-    url: "https://my.linbit.com/linbit-manage-node.py"
-    dest: "/root/linbit-manage-node.py"
-    mode: "0640"
-    force: "yes"
+- name: Install Linstor Packages for RedHat/CentOS/Rocky
+  import_tasks: install-rh-pkgs.yml
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
 
 
-- name: Register nodes using linbit-manage-node.py
-  shell: |
-    bash -c "LB_USERNAME={{ lb_user }} LB_PASSWORD={{ lb_pass  }} LB_CONTRACT_ID={{ lb_con_id  }} LB_CLUSTER_ID={{ lb_clu_id }} \
-    {{ ansible_python.executable }} /root/linbit-manage-node.py"
-
-
-- name: Install LINBIT Packages ( RHEL )
-  yum:
-    name: "{{ item }}"
-    update_cache: yes
-  with_items: "{{ lb_rpm_pkgs }}"
-  when: ansible_os_family == "Rocky" or ansible_os_family == "CentOS" or ansible_os_family == "RedHat"
-
-
-- name: Install LINBIT Packages ( Ubuntu )
-  apt:
-    name: "{{ item }}"
-    update_cache: yes
-  with_items: "{{ lb_deb_pkgs }}"
-  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+- name: Install Linstor Packages for Ubuntu/Debian
+  import_tasks: install-ubt-pkgs.yml
+  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
 

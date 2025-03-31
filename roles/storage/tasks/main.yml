@@ -15,12 +15,12 @@
 
 
 - name: Install Linstor Storage Pool
-  import_tasks: install.yml
+  import_tasks: install-nvme.yml
   tags: install
 
 
 - name: Uninstall Linstor Storage Pool
-  import_tasks: uninstall.yml
+  import_tasks: uninstall-nvme.yml
   tags: uninstall
 
 

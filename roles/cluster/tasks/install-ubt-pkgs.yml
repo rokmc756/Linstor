@@ -1,0 +1,50 @@
+---
+- name: Add the LINBIT PPA
+  shell: |
+    add-apt-repository ppa:linbit/linbit-drbd9-stack -y
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+  # upgrade: yes
+
+
+- name: Install Linstor and DRBD Packages
+  package:
+    name: "{{ linstor_deb_pkgs }}"
+    state: present
+
+
+- name: Add DRBD Module
+  modprobe:
+    name: drbd
+    state: present
+
+
+- name: Save DRBD Kernel Module Parameters
+  template:
+    src: drbd.conf.j2
+    dest: "/etc/modules-load.d/{{ item }}.conf"
+    mode: 0644
+  with_items:
+    - drbd
+
+
+- name: Reboot Required
+  shell: ( /bin/sleep 5; /sbin/shutdown -r now "Ansible Updates Triggered" ) &
+  register: reboot_required
+  ignore_errors: true
+  async: 120
+  poll: 0
+  notify:
+    - Waiting for Server to Come Back after Restart
+
+
+- meta: flush_handlers
+

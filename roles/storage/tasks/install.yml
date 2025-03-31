@@ -1,28 +1,34 @@
 ---
-#- name: Create DRBD Pool Volume Group for LINSTOR
-#  lvg:
-#    vg: drbdpool
-#    pvs: "{{ drbd_backing_disk }}"
+- name: Create thin File Backed Storage Pool Directory
+  file:
+    path: /var/lib/linstor/file-thin-storage-pool
+    state: directory
+    mode: '0755'
 
 
-#- name: Create Thin LVM on DRBD Pool
-#  lvol:
-#    vg: drbdpool
-#    thinpool: thinpool
-#    size: 50%VG
-
-
-#- name: Create the Storage Pool for lvm-thin
-#  shell: |
-#    linstor storage-pool create lvmthin {{ ansible_nodename }} lvm-thin drbdpool/thinpool
-#  register: storage_pool_create_result
-#  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
-
-
-- name: Create the Storage Pool for
+- name: Create the Storage Pool for File-Thin
   shell: |
-    linstor physical-storage create-device-pool --storage-pool nvme_pool \
-    --pool-name nvme_pool lvmthin {{ ansible_nodename }} /dev/nvme0n1
+    linstor storage-pool create filethin {{ ansible_nodename }} file-thin /var/lib/linstor/file-thin-storage-pool
+  register: storage_pool_create_result
+  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
+
+
+- name: Create DRBD Pool Volume Group for LINSTOR
+  lvg:
+    vg: drbdpool
+    pvs: "{{ drbd_backing_disk }}"
+
+
+- name: Create Thin LVM on DRBD Pool
+  lvol:
+    vg: drbdpool
+    thinpool: thinpool
+    size: 50%VG
+
+
+- name: Create the Storage Pool for lvm-thin
+  shell: |
+    linstor storage-pool create lvmthin {{ ansible_nodename }} lvm-thin drbdpool/thinpool
   register: storage_pool_create_result
   failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
 
@@ -31,4 +37,37 @@
   shell: |
     linstor controller set-property DrbdOptions/AutoEvictAllowEviction
   register: cancle_auto_evict
+
+
+- name: Verify that all storage pools are created and report the expected size
+  shell: |
+    linstor resource-group list
+  register: verify_all_storage_pools
+- debug: msg={{ verify_all_storage_pools }}
+
+
+# linstor storage-pool list
+# linstor resource-definition create myres
+# linstor volume-definition create myres 1G
+# linstor resource create myres --auto-place 2
+# linstor volume list
+
+# linstor resource create --diskless rk9-node03 myres
+# linstor volume list
+#╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+#┊ Resource ┊ Node       ┊ StoragePool          ┊ VolNr ┊ MinorNr ┊ DeviceName    ┊ Allocated ┊ InUse  ┊    State ┊ Repl ┊
+#╞═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╡
+#┊ myres    ┊ rk9-node02 ┊ file-thin            ┊     0 ┊    1000 ┊ /dev/drbd1000 ┊           ┊ Unused ┊ UpToDate ┊      ┊
+#┊ myres    ┊ rk9-node03 ┊ DfltDisklessStorPool ┊     0 ┊    1000 ┊ /dev/drbd1000 ┊           ┊ Unused ┊ Diskless ┊      ┊
+#┊ myres    ┊ rk9-node04 ┊ file-thin            ┊     0 ┊    1000 ┊ /dev/drbd1000 ┊           ┊ Unused ┊ UpToDate ┊      ┊
+#╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+#
+# linstor resource list
+#╭────────────────────────────────────────────────────────────────────────────────────────────╮
+#┊ ResourceName ┊ Node       ┊ Layers       ┊ Usage  ┊ Conns ┊    State ┊ CreatedOn           ┊
+#╞════════════════════════════════════════════════════════════════════════════════════════════╡
+#┊ myres        ┊ rk9-node02 ┊ DRBD,STORAGE ┊ Unused ┊ Ok    ┊ UpToDate ┊ 2025-03-31 03:26:00 ┊
+#┊ myres        ┊ rk9-node03 ┊ DRBD,STORAGE ┊ Unused ┊ Ok    ┊ Diskless ┊ 2025-03-31 03:25:56 ┊
+#┊ myres        ┊ rk9-node04 ┊ DRBD,STORAGE ┊ Unused ┊ Ok    ┊ UpToDate ┊ 2025-03-31 03:26:00 ┊
+#╰────────────────────────────────────────────────────────────────────────────────────────────╯
 

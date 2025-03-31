@@ -1,15 +1,15 @@
 ---
-- name: Delete the Storage Pool for File-Thin
-  shell: |
-    linstor storage-pool delete filethin {{ ansible_nodename }} file-thin
-  register: storage_pool_delete_result
-  failed_when: ( storage_pool_delete_result.rc not in [ 0, 10 ] )
-
-
-- name: Delete thin File Backed Storage Pool Directory
-  file:
-    path: /var/lib/linstor/file-thin-storage-pool
-    state: absent
+#- name: Delete the Storage Pool for File-Thin
+#  shell: |
+#    linstor storage-pool delete filethin {{ ansible_nodename }} file-thin
+#  register: storage_pool_delete_result
+#  failed_when: ( storage_pool_delete_result.rc not in [ 0, 10 ] )
+#
+#
+#- name: Delete thin File Backed Storage Pool Directory
+#  file:
+#    path: /var/lib/linstor/file-thin-storage-pool
+#    state: absent
 
 
 - name: Delete LINSTOR Cluster as Satellite Node
@@ -19,8 +19,17 @@
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
 
 
-- name: Sleep for 30 Seconds and Continue with Play
-  wait_for: timeout=30
+- name: Check Satellite is Deleted
+  shell: |
+    linstor node list | grep SATELLITE  | wc -l
+  register: check_satellite_status
+  until: check_satellite_status.stdout|int == 0
+  retries: 12
+  delay: 5
+
+
+#- name: Sleep for 30 Seconds and Continue with Play
+#  wait_for: timeout=30
 
 
 - name: Disable and Stop LINSTOR Satellite
@@ -90,5 +99,4 @@
   delegate_to: "{{item}}"
   delegate_facts: True
   loop: "{{groups['controller']}}"
-
 

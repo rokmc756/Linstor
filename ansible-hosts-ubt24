@@ -1,0 +1,34 @@
+[all:vars]
+ssh_key_filename="id_rsa"
+remote_machine_username="jomoon"
+remote_machine_password="changeme"
+
+
+[controller]
+ubt24-node06 ansible_ssh_host=192.168.1.86
+
+
+[satellite]
+ubt24-node07 ansible_ssh_host=192.168.1.87
+ubt24-node08 ansible_ssh_host=192.168.1.88
+ubt24-node09 ansible_ssh_host=192.168.1.89
+
+
+[cluster:children]
+controller
+satellite
+
+
+[storage]
+ubt24-node07 ansible_ssh_host=192.168.1.87
+ubt24-node08 ansible_ssh_host=192.168.1.88
+ubt24-node09 ansible_ssh_host=192.168.1.89
+
+
+[incus]
+ubt24-node01 ansible_ssh_host=192.168.1.81
+ubt24-node02 ansible_ssh_host=192.168.1.82
+ubt24-node03 ansible_ssh_host=192.168.1.83
+ubt24-node04 ansible_ssh_host=192.168.1.84
+ubt24-node05 ansible_ssh_host=192.168.1.85
+

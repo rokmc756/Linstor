@@ -66,8 +66,8 @@
     enabled: yes
 
 
-- name: Sleep for 30 Seconds and Continue with Play
-  wait_for: timeout=30
+#- name: Sleep for 30 Seconds and Continue with Play
+#  wait_for: timeout=30
 
 
 - name: Join LINSTOR Cluster as Satellite Node
@@ -76,6 +76,15 @@
     --node-type satellite
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
+
+
+- name: Check Satellite is Online
+  shell: |
+    linstor node list | grep SATELLITE  | grep Online | wc -l
+  register: check_satellite_status
+  until: check_satellite_status.stdout|int == 3
+  retries: 12
+  delay: 5
 
 
 #- name: Create thin File Backed Storage Pool Directory

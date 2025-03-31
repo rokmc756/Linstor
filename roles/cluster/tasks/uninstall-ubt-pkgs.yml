@@ -1,0 +1,49 @@
+---
+- name: Remove DRBD Module
+  modprobe:
+    name: drbd
+    state: absent
+
+
+- name: Delete DRBD Kernel Module Parameters
+  file:
+    path: "/etc/modules-load.d/{{ item }}.conf"
+    state: absent
+  with_items:
+    - drbd
+
+
+- name: Uninstall DRBD Packages
+  package:
+    name: "{{ linstor_deb_pkgs }}"
+    state: absent
+
+
+- name: Remove the LINBIT PPA
+  shell: |
+    add-apt-repository --remove ppa:linbit/linbit-drbd9-stack -y
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+  # upgrade: yes
+
+
+- name: Reboot Required
+  shell: ( /bin/sleep 5; /sbin/shutdown -r now "Ansible Updates Triggered" ) &
+  register: reboot_required
+  ignore_errors: true
+  async: 120
+  poll: 0
+  notify:
+    - Waiting for Server to Come Back after Restart
+
+
+- meta: flush_handlers
+

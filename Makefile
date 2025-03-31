@@ -42,10 +42,10 @@ download:
 	@cat Makefile.tmp  | sed -e 's/temp/${*}/g' > Makefile.${*}
 	
 	@if [ "${*}" = "hosts" ]; then\
-		ln -sf ansible-hosts-rk9 ansible-hosts;\
+		ln -sf ansible-hosts-ubt24 ansible-hosts;\
 		cp setup-hosts.yml.tmp setup-hosts.yml;\
 	elif [ "${*}" != "hosts" ]; then\
-		ln -sf ansible-hosts-rk9 ansible-hosts;\
+		ln -sf ansible-hosts-ubt24 ansible-hosts;\
 		cat setup-temp.yml.tmp | sed -e 's/temp/${*}/g' > setup-${*}.yml;\
 	else\
 		echo "No actions to temp";\

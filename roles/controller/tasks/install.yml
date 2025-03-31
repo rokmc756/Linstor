@@ -55,8 +55,8 @@
     enabled: yes
 
 
-- name: Sleep for 30 Seconds and Continue with Play
-  wait_for: timeout=30
+#- name: Sleep for 30 Seconds and Continue with Play
+#  wait_for: timeout=30
 
 
 - name: Initialize the LINSTOR Control Node as Pure Controller
@@ -75,4 +75,13 @@
   register: linstor_create_result
   failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
   when: "'satellite' in group_names"
+
+
+- name: Sleep for 30 Seconds and Continue with Play
+  shell: |
+    linstor node list | grep CONTROLLER | awk '{print $9}'
+  register: check_controller_status
+  until: check_controller_status.stdout.find("Online") != -1
+  retries: 12
+  delay: 5
 

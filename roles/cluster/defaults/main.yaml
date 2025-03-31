@@ -2,3 +2,6 @@
 lb_rpm_pkgs: ["kmod-drbd", "drbd", "linstor-controller", "linstor-satellite", "linstor-client", "python-linstor"]
 lb_deb_pkgs: ["drbd-dkms", "drbd-utils", "linstor-controller", "linstor-satellite", "linstor-client", "python-linstor"]
 
+linstor_rpm_pkgs: "drbd-dkms,drbd-utils,linstor-satellite,linstor-controller,linstor-client,linstor-gui,linstor-common,python-linstor,python3-setuptools,nvme-cli"
+linstor_deb_pkgs: "drbd-dkms,drbd-utils,linstor-satellite,linstor-controller,linstor-client,linstor-gui,linstor-common,python-linstor,python3-setuptools,nvme-cli"
+

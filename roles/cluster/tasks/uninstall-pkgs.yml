@@ -1,66 +1,10 @@
 ---
-- name: Remove DRBD Module
-  modprobe:
-    name: drbd
-    state: absent
+- name: Uninstall Linstor Packages for RedHat/CentOS/Rocky
+  import_tasks: uninstall-rh-pkgs.yml
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
 
 
-- name: Uninstall DRBD Packages
-  yum:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - drbd
-
-
-- name: Uninstall Linstor RPM Packages
-  package:
-    name: "{{ _linstor.base_path }}/{{ item }}"
-    state: absent
-    disable_gpg_check: yes
-  # async: 360
-  # poll: 5
-  with_items:
-    - linstor-client
-    - linstor-gui
-    - linstor-controller
-    - linstor-satellite
-    - linstor-common
-    - python-linstor
-    - kmod-drbd
-
-
-- name: Delete Linstor RPM Packages
-  file:
-    path: "{{ _linstor.base_path }}/{{ item }}"
-    state: absent
-  with_items:
-    - linstor-controller-1.30.4-1.el9.noarch.rpm
-    - python-linstor-1.25.0-1.noarch.rpm
-    - linstor-client-1.23.2-1.noarch.rpm
-    - linstor-gui-1.9.3-1.noarch.rpm
-    - linstor-common-1.30.4-1.el9.noarch.rpm
-    - linstor-satellite-1.30.4-1.el9.noarch.rpm
-    - kmod-drbd-9.2.13_5.14.0_503.33.1-1.x86_64.rpm
-
-
-- name: Delete DRBD Kernel Module Parameters
-  file:
-    path: "/etc/modules-load.d/{{ item }}.conf"
-    state: absent
-  with_items:
-    - drbd
-
-
-- name: Reboot Required
-  shell: ( /bin/sleep 5; /sbin/shutdown -r now "Ansible Updates Triggered" ) &
-  register: reboot_required
-  ignore_errors: true
-  async: 120
-  poll: 0
-  notify:
-    - Waiting for Server to Come Back after Restart
-
-
-- meta: flush_handlers
+- name: Uninstall Linstor Packages for Ubuntu/Debian
+  import_tasks: uninstall-ubt-pkgs.yml
+  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
 

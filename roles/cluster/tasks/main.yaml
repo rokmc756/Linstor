@@ -1,5 +1,5 @@
 ---
-- name: Check OS
+- name: Check OS ( Linstor Cluster )
   fail: msg="{{ ansible_distribution }} is Not Supported!"
   when: ansible_distribution != 'RedHat' or ansible_distribution != 'CentOS' or ansible_distribution != 'Rocky' or ansible_distribution != 'Debian' or ansible_distribution != 'Ubuntu'
 
@@ -9,14 +9,8 @@
 #  tags: install, uninstall, upload, download, init, purge, add, remove, enable, disable, clean, deploy, destroy
 
 
-#- name: Register Nodes and Install Packages
-#  import_tasks: install-pkgs.yml
-#  tags: prepare
-#  when: ( remote is defined and remote == true )
-
-
-- name: Install Local Packages
-  import_tasks: install-local-pkgs.yml
+- name: Install Linstor Packages
+  import_tasks: install-pkgs.yml
   tags: prepare
 
 
