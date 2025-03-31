@@ -7,13 +7,14 @@ These block devices are then replicated using DRBD to provide fault tolerance an
 regardless of its storage capabilities. Since volumes are replicated using the DRBD kernel module, the data path for the replication is kept
 entirely on kernel space, reducing its overhead when compared to solutions implemented in user space.
 
+
 ## Linstro Storage Architecture
 ![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
 
 
 ## Linstor Ansible Playbook
-This Ansible Playbook provide the feature to build a Linstor Cluster on Baremetal, Virtual Machines.
-The main purposes of this project are simple to deploy Linstor Cluster quickly and learn knowleges about it.
+This Ansible Playbook provides the feature to build a Linstor Cluster on Baremetal, Virtual Machines.
+The main purposes of this project are simple to deploy Linstor Cluster quickly and interact with Incus Cluster and learn knowleges about it.
 If you're unfamiliar with Linstor, please refer to the
 [Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the Linstor user's guide on https://linbit.com to learn more.
@@ -23,8 +24,8 @@ System requirements:
   - All target systems must have passwordless SSH access.
   - All hostnames used in the inventory file are resolvable (or use IP addresses).
   - Target systems are Ubuntu 24.04 currently verified (or compatible variants).
-  - MacOS or Linux(or WSL) should have installed ansible as ansible host.
-  - Supported OS for ansible target host should be prepared with package repository configured such as yum, dnf and apt
+  - MacOS or Linux(or WSL) should have installed ansible as Ansible Host.
+  - Supported OS for ansible target host should be prepared with apt package repository configured
   - At least a Normal User which has Sudo Privileges
 
 
