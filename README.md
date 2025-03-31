@@ -11,7 +11,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 ![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
 
 
-# LINSTOR Ansible Playbook
+## LINSTOR Ansible Playbook
 Build a LINSTOR® Cluster using Ansible. If you're unfamiliar with LINSTOR, please refer to the
 [Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the LINSTOR user's guide on https://linbit.com to learn more.
@@ -23,7 +23,7 @@ System requirements:
   - All hostnames used in the inventory file are resolvable (or use IP addresses).
   - Target systems are Ubuntu 24.04 currently verified (or compatible variants).
 
-# Usage
+## Usage
 Add the target system information into the inventory file named `ansible-hosts-ubt24`.
 For example:
 ```
@@ -118,7 +118,7 @@ or
 make storage r=uninstall
 ```
 
-# Testing Installation
+## Testing Installation
 Shell into the controller node, and check that everything is setup:
 ```sh
 linstor node list; linstor storage-pool list
@@ -136,7 +136,7 @@ linstor resource list
 You should now have a DRBD device provisioned on a node in your cluster that you
 can use as you would any other block device.
 
-# Reference
+## Reference
 
 For more information on LINSTOR - such as instructions for Kubernetes,
 OpenStack, Docker, or other integration - refer to
