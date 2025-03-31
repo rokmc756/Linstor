@@ -197,11 +197,11 @@ can use as you would any other block device.
 
 
 ## Open Linstor Web Console
-Open web brower and type http://controller's ip address:3370
+Open web brower and type `http://<controller's ip address>:3370`
 
 
 ## Reference
 - For building Linstor RPM Packages from Sources - refer to [Build Linstor RPM Packages](https://github.com/rokmc756/Linstor/blob/main/BUILD-Linstor.md)
-- For more instructions for Kubernetes, OpenStack, Docker, or other integration - refer to [LINBIT's LINSTOR documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
+- For more instructions for Kubernetes, OpenStack, Docker, or other integration - refer to [LINSTOR Documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
 - For more Linstore concepts and configurations - refer to [Linstor: Concepts and Configuration](https://brian-candler.medium.com/linstor-concepts-and-configuration-e5b0c8e10d27)
 
