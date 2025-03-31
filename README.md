@@ -8,10 +8,10 @@ regardless of its storage capabilities. Since volumes are replicated using the D
 entirely on kernel space, reducing its overhead when compared to solutions implemented in user space.
 
 ## Linstro Storage Architecture
-![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-exos-integration.png)
-![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-internal-architecture.png)
-![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-proxmox-architecture02.png)
-![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-public-architecture.svg)
+![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png)
+![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
+![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-proxmox-architecture02.png)
+![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg)
 
 
 # LINSTOR Ansible Playbook
