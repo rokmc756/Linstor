@@ -8,25 +8,20 @@ regardless of its storage capabilities. Since volumes are replicated using the D
 entirely on kernel space, reducing its overhead when compared to solutions implemented in user space.
 
 ## Linstro Storage Architecture
-![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png)
 ![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png)
-![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-proxmox-architecture02.png)
-![alt text](https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg)
 
 
 # LINSTOR Ansible Playbook
-Build a LINSTOR® Cluster using Ansible. If you're unfamiliar with LINSTOR,
-please refer to the
+Build a LINSTOR® Cluster using Ansible. If you're unfamiliar with LINSTOR, please refer to the
 [Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the LINSTOR user's guide on https://linbit.com to learn more.
 
 System requirements:
-
-  - An account at https://my.linbit.com (contact sales@linbit.com).
+  - An account at https://my.linbit.com (contact sales@linbit.com) or individual baremetal or virtual machines
   - Deployment environment must have Ansible `2.7.0+` and `python-netaddr`.
   - All target systems must have passwordless SSH access.
   - All hostnames used in the inventory file are resolvable (or use IP addresses).
-  - Target systems are RHEL 7/8/9  or Ubuntu 22.04 (or compatible variants).
+  - Target systems are Ubuntu 24.04 currently verified (or compatible variants).
 
 # Usage
 Add the target system information into the inventory file named `ansible-hosts-ubt24`.
@@ -37,36 +32,30 @@ ssh_key_filename="id_rsa"
 remote_machine_username="jomoon"
 remote_machine_password="changeme"
 
-
 [controller]
 ubt24-node06 ansible_ssh_host=192.168.1.86
-
 
 [satellite]
 ubt24-node07 ansible_ssh_host=192.168.1.87
 ubt24-node08 ansible_ssh_host=192.168.1.88
 ubt24-node09 ansible_ssh_host=192.168.1.89
 
-
 [cluster:children]
 controller
 satellite
-
 
 [storage]
 ubt24-node07 ansible_ssh_host=192.168.1.87
 ubt24-node08 ansible_ssh_host=192.168.1.88
 ubt24-node09 ansible_ssh_host=192.168.1.89
+~~ snip
 ```
 
-You can add a `controller` node to the `satellite` node group which will
-result in the node becoming a `Combined` node in the LINSTOR cluster. A
-`Combined` node will function both as a `controller` and as a `satellite` node.
-Add nodes to the `linstor_storage_pool` node group to contribute block storage
-to the LINSTOR storage pool created by the playbook.
+You can add a `controller` node to the `satellite` node group which will result in the node becoming a `Combined` node in the LINSTOR cluster.
+A `Combined` node will function both as a `controller` and as a `satellite` node.
+Add nodes to the `storage` node group to contribute block storage to the LINSTOR storage pool created by the playbook.
 
-Also, before continuing, edit `group_vars/all.yaml` to configure the necessary
-variables for the playbook. For example:
+Also, before continuing, edit `group_vars/all.yaml` to configure the necessary variables for the playbook. For example:
 ```
 $ vi group_vars/all.yaml
 ---
@@ -91,13 +80,9 @@ lb_clu_id: ""
 ~~ snip
 ```
 
-The `drbd_backing_disk` variable should be set to an unused block device that the
-LINSTOR satellite nodes will use if the nodes are also a part of the
-`storage-pool` node group. If you do not have an unused block device, do not add
-the node to the `linstor_storage_pool` node group, and only a `file-thin`
-storage-pool will be configured instead. The `drbd_replication_network` is the network,
-in CIDR notation, that will be used by LINSTOR and DRBD. It is strongly recommended
-that the `drbd_replication_network` be separate from the management network in
+The `_linstor.storage` variable should be set to an unused block device that the LINSTOR satellite nodes will use if the nodes are also a part of the `storage` node group.
+If you do not have an unused block device, do not add the node to the `storage` node group, and only a `file-thin` storage-pool will be configured instead.
+The `drbd_replication_network` is the network, in CIDR notation, that will be used by LINSTOR and DRBD. It is strongly recommended that the `drbd_replication_network` be separate from the management network in
 production systems to limit network traffic congestion, but it's not a hard requirement.
 
 When ready, run the `setup-temp.yml.tmp` playbook:
