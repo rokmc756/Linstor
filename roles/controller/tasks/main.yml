@@ -1,20 +1,20 @@
 ---
-- name: Check OS
+- name: Check OS ( Linstor Controller )
   fail: msg="{{ ansible_distribution }} is Not Supported!"
   when: ansible_distribution != 'RedHat' or ansible_distribution != 'CentOS' or ansible_distribution != 'Rocky' or ansible_distribution != 'Debian' or ansible_distribution != 'Ubuntu'
 
 
-#- name: Set Facts for Network and Packages Informations
-#  import_tasks: set-ceph-facts.yml
-#  tags: install, uninstall, upload, download, init, purge, add, remove, enable, disable, clean, deploy, destroy
+- name: Set Facts for Network and Packages Informations
+  import_tasks: set-facts.yml
+  tags: install, uninstall, enable, disable, create, delete
 
 
 - name: Install Linstor Controller
-  import_tasks: install.yml
-  tags: install
+  import_tasks: setup-controller.yml
+  tags: setup, create, install
 
 
 - name: Uninstall Linstor Controller
-  import_tasks: uninstall.yml
-  tags: uninstall
+  import_tasks: remove-controller.yml
+  tags: remove, delete, uninstall
 

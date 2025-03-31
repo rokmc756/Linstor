@@ -1,4 +1,4 @@
-
+---
 - hosts: lab
   tasks:
     - name: "{{ power_title }} Virtual Machines"
@@ -7,6 +7,5 @@
         virsh {{ power_state }} {{ item }}
       register: power_vms
       ignore_errors: true
-      loop: "{{ _hadoop.vms.rk9 }}"
-      # loop: "{{ _hadoop.vms.ubt24 }}"
+      loop: "{{ _linstor.vms.rk9 }}"
 

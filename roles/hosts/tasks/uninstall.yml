@@ -38,7 +38,7 @@
     name: "{{ sudo_user }}"
     state: absent
   ignore_errors: true
-  #  group: "{{ sudo_group }}"
+# group: "{{ sudo_group }}"
 
 
 - name: Uninstall Prerequest Software Packages
@@ -65,15 +65,4 @@
     - "epel-release"
     - "dnf-utils"
   ignore_errors: true
-
-
-- name: Delete Linstor Reepository
-  file:
-    path: "/etc/yum.repos.d/{{ item }}.repo"
-    state: absent
-  with_items:
-    - "drbd-9"
-    - "drbd-proxy-3.2"
-    - "drbd-proxy-4"
-    - "pacemaker-2"
 

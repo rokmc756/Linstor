@@ -1,45 +1,46 @@
 ---
 - name: Remove Physical Volumes
   shell: |
-    pvremove -y -ff {{ item }}
+    pvremove -y -ff {{ item.storage_dev }}
   register: remove_pvs
   ignore_errors: true
-  with_items: "{{ drbd_backing_disk }}"
+  when: item.type == "lvmthin"
+  with_items: "{{ _linstor.storage }}"
 - debug: msg={{ remove_pvs }}
 
 
 - name: Purge Block Devices
   shell: |
-    dd if=/dev/zero of={{ item }} bs=4096 count=1 conv=notrunc
+    dd if=/dev/zero of={{ item.storage_dev }} bs=4096 count=1 conv=notrunc
   register: purge_block_devices
   ignore_errors: true
-  with_items: "{{ drbd_backing_disk }}"
+  with_items: "{{ _linstor.storage }}"
 - debug: msg={{ purge_block_devices }}
 
 
 - name: Wipe Filesystem in NVME Devices
   shell: |
-    wipefs -a {{ item }}
+    wipefs -a {{ item.storage_dev }}
   register: wipefs_nvme_devices
   ignore_errors: true
-  with_items: "{{ drbd_backing_disk }}"
+  with_items: "{{ _linstor.storage }}"
 - debug: msg={{ wipefs_nvme_devices }}
 
 
 - name: Delete Zap in NVME Devices
   shell: |
-    sgdisk --zap-all --delete {{ item }}
+    sgdisk --zap-all --delete {{ item.storage_dev }}
   register: delete_zap_nvme_devices
   ignore_errors: true
-  with_items: "{{ drbd_backing_disk }}"
+  with_items: "{{ _linstor.storage }}"
 - debug: msg={{ delete_zap_nvme_devices }}
 
 
 - name: Discard Block ID
   shell: |
-    blkdiscard {{ item }}
+    blkdiscard {{ item.storage_dev }}
   register: discard_block_id
   ignore_errors: true
-  with_items: "{{ drbd_backing_disk }}"
+  with_items: "{{ _linstor.storage }}"
 - debug: msg={{ discard_block_id }}
 

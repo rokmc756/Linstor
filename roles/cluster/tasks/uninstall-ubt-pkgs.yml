@@ -1,8 +1,11 @@
 ---
 - name: Remove DRBD Module
   modprobe:
-    name: drbd
+    name: "{{ item }}"
     state: absent
+  with_items:
+    - drbd_transport_tcp
+    - drbd
 
 
 - name: Delete DRBD Kernel Module Parameters

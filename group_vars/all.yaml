@@ -2,7 +2,6 @@
 ansible_ssh_pass: "changeme"
 ansible_become_pass: "changeme"
 ansible_ssh_private_key_file: ~/.ssh/ansible_key
-# become: yes
 
 # LINSTOR variables
 drbd_backing_disk: /dev/nvme0n1
@@ -58,6 +57,13 @@ _linstor:
       ipaddr0: "192.168.0.8"
       ipaddr1: "192.168.1.8"
       ipaddr2: "192.168.2.8"
+  storage:
+    - { incus_storage_pool_name: "incus_lvmthin_pool01",  storage_pool: 'lvmthin_pool01',  pool_name: 'lvmthin_pool01',  storage_dev: '/dev/nvme0n1', type: 'lvmthin' }
+    - { incus_storage_pool_name: "incus_zfsthin_pool02",  storage_pool: 'zfsthin_pool02',  pool_name: 'zfsthin_pool02',  storage_dev: '/dev/nvme0n2', type: 'zfsthin' }
+    - { incus_storage_pool_name: "incus_lvm_pool01",      storage_pool: 'lvm_pool01',      pool_name: 'lvm_pool01',      storage_dev: '/dev/sdb',     type: 'lvm' }
+    - { incus_storage_pool_name: "incus_zfs_pool02",      storage_pool: 'zfs_pool02',      pool_name: 'zfs_pool02',      storage_dev: '/dev/sdc',     type: 'zfs' }
+    # provider_kind: invalid choice: 'file' (choose from 'lvm', 'lvmthin', 'zfs', 'zfsthin', 'spdk')"], "stdout": "", "stdout_lines": []}
+    # Type : diskless, ebs_initiator, exos, file, filethin, lvm(ok), lvmthin(ok), remotespdk, spdk, storagespaces, storagespacesthin, zfs(ok), zfsthin(ok)
   vms:
     rk9: [ "rk9-freeipa", "rk9-node01", "rk9-node02", "rk9-node03", "rk9-node04", "rk9-node05", "rk9-node06" ]
     ubt24: [ "rk9-freeipa", "ubt24-node06", "ubt24-node07", "ubt24-node08", "ubt24-node09" ]

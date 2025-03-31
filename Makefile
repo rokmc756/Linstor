@@ -32,9 +32,6 @@ download:
 	@if [ -z ${VIRT_ENV} ]; then echo "Not Supported Virtualization"; exit 1; fi
 	@ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} download-hadoop.yml --tags="download"
 
-#linstor:
-#	@ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} prepare-linstor.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags="prepare"
-
 
 # For All Roles
 %:
@@ -65,3 +62,4 @@ download:
 
 # Need to check what it should be needed
 .PHONY:	all init install update ssh common clean no_targets__ role-update
+

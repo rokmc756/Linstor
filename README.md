@@ -1,9 +1,21 @@
-## WIP
-Need to access package linstor repository
+## What is Linstro?
+LINSTOR is an open-source software-defined storage solution that is typically used to manage DRBD replicated storage volumes.
+It provides both highly available and high performance volumes while focusing on operational simplicity.
+
+LINSTOR does not manage the underlying storage by itself and instead relies on other components such as ZFS or LVM to provision block devices.
+These block devices are then replicated using DRBD to provide fault tolerance and the ability to mount the volumes on any cluster node,
+regardless of its storage capabilities. Since volumes are replicated using the DRBD kernel module, the data path for the replication is kept
+entirely on kernel space, reducing its overhead when compared to solutions implemented in user space.
+
+## Linstro Storage Architecture
+![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-exos-integration.png)
+![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-internal-architecture.png)
+![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-proxmox-architecture02.png)
+![alt text](https://github.com/rokmc756/Linstro/blob/main/roles/cluster/images/linstor-public-architecture.svg)
+
 
 # LINSTOR Ansible Playbook
-
-Build a LINSTOR® cluster using Ansible. If you're unfamiliar with LINSTOR,
+Build a LINSTOR® Cluster using Ansible. If you're unfamiliar with LINSTOR,
 please refer to the
 [Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the LINSTOR user's guide on https://linbit.com to learn more.
@@ -17,22 +29,34 @@ System requirements:
   - Target systems are RHEL 7/8/9  or Ubuntu 22.04 (or compatible variants).
 
 # Usage
-
-Add the target system information into the inventory file named `hosts.ini`.
+Add the target system information into the inventory file named `ansible-hosts-ubt24`.
 For example:
 ```
+[all:vars]
+ssh_key_filename="id_rsa"
+remote_machine_username="jomoon"
+remote_machine_password="changeme"
+
+
 [controller]
-192.168.1.173
+ubt24-node06 ansible_ssh_host=192.168.1.86
+
 
 [satellite]
-192.168.1.[171:172]
+ubt24-node07 ansible_ssh_host=192.168.1.87
+ubt24-node08 ansible_ssh_host=192.168.1.88
+ubt24-node09 ansible_ssh_host=192.168.1.89
 
-[linstor_cluster:children]
+
+[cluster:children]
 controller
 satellite
 
-[linstor_storage_pool]
-192.168.1.[171:172]
+
+[storage]
+ubt24-node07 ansible_ssh_host=192.168.1.87
+ubt24-node08 ansible_ssh_host=192.168.1.88
+ubt24-node09 ansible_ssh_host=192.168.1.89
 ```
 
 You can add a `controller` node to the `satellite` node group which will
@@ -44,21 +68,27 @@ to the LINSTOR storage pool created by the playbook.
 Also, before continuing, edit `group_vars/all.yaml` to configure the necessary
 variables for the playbook. For example:
 ```
+$ vi group_vars/all.yaml
 ---
-# Ansible variables
-ansible_user: vagrant
-ansible_ssh_private_key_file: ~/.vagrant.d/insecure_private_key
-become: yes
+ansible_ssh_pass: "changeme"
+ansible_become_pass: "changeme"
+ansible_ssh_private_key_file: ~/.ssh/ansible_key
 
 # LINSTOR variables
-drbd_backing_disk: /dev/sdb
-drbd_replication_network: 192.168.2.0/24
+drbd_replication_network: 192.168.1.0/24
 
-# LINBIT portal variables
-lb_user: "lbportaluser"
-lb_pass: "lbportalpass"
-lb_con_id: "1234"
-lb_clu_id: "4321"
+# LINBIT Portal Variables
+lb_user: ""
+lb_pass: ""
+lb_con_id: ""
+lb_clu_id: ""
+~~ snip
+  storage:
+    - { incus_storage_pool_name: "incus_lvmthin_pool01",  storage_pool: 'lvmthin_pool01',  pool_name: 'lvmthin_pool01',  storage_dev: '/dev/nvme0n1', type: 'lvmthin' }
+    - { incus_storage_pool_name: "incus_zfsthin_pool02",  storage_pool: 'zfsthin_pool02',  pool_name: 'zfsthin_pool02',  storage_dev: '/dev/nvme0n2', type: 'zfsthin' }
+    - { incus_storage_pool_name: "incus_lvm_pool01",      storage_pool: 'lvm_pool01',      pool_name: 'lvm_pool01',      storage_dev: '/dev/sdb',     type: 'lvm' }
+    - { incus_storage_pool_name: "incus_zfs_pool02",      storage_pool: 'zfs_pool02',      pool_name: 'zfs_pool02',      storage_dev: '/dev/sdc',     type: 'zfs' }
+~~ snip
 ```
 
 The `drbd_backing_disk` variable should be set to an unused block device that the
@@ -70,31 +100,41 @@ in CIDR notation, that will be used by LINSTOR and DRBD. It is strongly recommen
 that the `drbd_replication_network` be separate from the management network in
 production systems to limit network traffic congestion, but it's not a hard requirement.
 
-When ready, run the `site.yaml` playbook:
-
+When ready, run the `setup-temp.yml.tmp` playbook:
+## Preapre or Clean Linstor Cluster such as Package Installation
 ```sh
-make linstor r=prepare
+make cluster r=prepare
+
+or
+make cluster r=clean
+```
+
+## Install Linstor Controller
+```sh
 make controller r=install
+
+or
+make controller r=uninstall
+```
+
+## Install Linstor Satellite
+```sh
 make satellite r=install
+
+or
+make satellite r=uninstall
+```
+
+## Install Linstor Storage Pools
+```sh
 make storage r=install
 
+or
 make storage r=uninstall
-
-ansible-playbook site.yaml
 ```
 
-If you don't want to put your LINBIT credentials into the `group_vars/all.yaml`, you
-can run the playbook like this instead:
-
-```sh
-ansible-playbook -e lb_user="username" -e lb_pass="password" -e lb_con_id="1234" -e lb_clu_id="1234" site.yaml
-```
-
-Congratulations! You should now have successfully created a LINSTOR cluster using Ansible.
 # Testing Installation
-
 Shell into the controller node, and check that everything is setup:
-
 ```sh
 linstor node list; linstor storage-pool list
 ```

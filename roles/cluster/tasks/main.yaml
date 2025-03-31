@@ -4,17 +4,17 @@
   when: ansible_distribution != 'RedHat' or ansible_distribution != 'CentOS' or ansible_distribution != 'Rocky' or ansible_distribution != 'Debian' or ansible_distribution != 'Ubuntu'
 
 
-#- name: Set Facts for Network and Packages Informations
-#  import_tasks: set-facts.yml
-#  tags: install, uninstall, upload, download, init, purge, add, remove, enable, disable, clean, deploy, destroy
+- name: Set Facts for Network and Packages Informations
+  import_tasks: set-facts.yml
+  tags: prepare, clean, install, uninstall, enable, disable, create, delete
 
 
 - name: Install Linstor Packages
   import_tasks: install-pkgs.yml
-  tags: prepare
+  tags: prepare, setup, install
 
 
 - name: Uninstall Linstor Controller
   import_tasks: uninstall-pkgs.yml
-  tags: clean
+  tags: clean, remove, uninstall
 

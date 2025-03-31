@@ -22,38 +22,6 @@
   with_items: "{{ install_pkgs }}"
 
 
-#- name: Add Linstor Reepository
-#  yum_repository:
-#    name: "{{ item }}"
-#    description: Linbit Repository for Linstor
-#    baseurl: "https://packages.linbit.com/yum/rhel9/{{ item }}/x86_64/"
-#    enabled: yes
-#  with_items:
-#    - "drbd-9"
-#    - "drbd-proxy-3.2"
-#    - "drbd-proxy-4"
-#    - "pacemaker-2"
-#  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
-#
-#
-#- name: Add the LINBIT PPA
-#  shell: |
-#    add-apt-repository ppa:linbit/linbit-drbd9-stack -y
-#  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
-#
-#
-#- name: Update Caches for APT Packages
-#  apt:
-#    update_cache: yes
-#    cache_valid_time: 86400   # One day
-#  register: update_apt_cache
-#  until: update_apt_cache is succeeded
-#  retries: 20
-#  delay: 20
-#  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
-#  # upgrade: yes
-
-
 - name: Add the Inventory into /etc/hosts
   template:
     src: hosts.j2

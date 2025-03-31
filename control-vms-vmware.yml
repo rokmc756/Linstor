@@ -1,5 +1,5 @@
+---
 - hosts: localhost
-
   tasks:
     - name: "{{ power_title }} Virtual Machines Without the Answer Param"
       vmware_guest_powerstate:

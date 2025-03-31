@@ -1,13 +1,11 @@
 ---
 - hosts: cluster
   gather_facts: yes
-  become_user: root
   become: yes
 
 
 - hosts: temp
   gather_facts: yes
-  become_user: root
   become: yes
   roles:
     - { role: temp, tags: temp }

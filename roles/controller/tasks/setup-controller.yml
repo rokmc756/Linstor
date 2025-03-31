@@ -28,7 +28,7 @@
   shell: ufw status
   changed_when: false
   register: ufw
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
 
 
 - name: The UFW Ports for LINSTOR Controller/Satellite Connections

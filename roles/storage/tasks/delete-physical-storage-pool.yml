@@ -1,0 +1,62 @@
+---
+- name: Delete the NVME Storage Pool
+  shell: |
+    linstor storage-pool delete {{ ansible_nodename }} {{ item.storage_pool }}
+  register: storage_pool_delete_result
+  ignore_errors: true
+  with_items: "{{ _linstor.storage }}"
+  # failed_when: ( storage_pool_delete_result.rc not in [ 0, 10 ] )
+
+
+# zfs list -t all
+- name: Remove Linstor Zpool
+  shell: |
+    zpool destroy -f {{ item.storage_pool }}
+  register: remove_linstor_zpool
+  ignore_errors: true
+  when: item.type == "zfsthin" or item.type == "zfs"
+  with_items: "{{ _linstor.storage }}"
+
+
+- name: Remove Linstor Device Mapper
+  shell: |
+    dmsetup remove linstor_{{ item.storage_pool }}-{{ item.pool_name }}
+  register: remove_linstor_dm
+  ignore_errors: true
+  when: item.type == "lvmthin"
+  with_items: "{{ _linstor.storage }}"
+
+
+#- name: Remove Linstor Device Mapper Tpool
+#  shell: |
+#    dmsetup remove linstor_{{ item }}-{{ item }}-tpool
+#  register: remove_linstor_dm_tpool
+#  ignore_errors: true
+#  when: item.type == "lvmthin"
+#  with_items: "{{ _linstor.storage }}"
+
+
+- name: Remove Linstor Device Mapper Tdata
+  shell: |
+    dmsetup remove linstor_{{ item.storage_pool }}-{{ item.pool_name }}_tdata
+  register: remove_linstor_dm_tdata
+  ignore_errors: true
+  when: item.type == "lvmthin"
+  with_items: "{{ _linstor.storage }}"
+
+
+- name: Remove Linstor Device Mapper Tmeta
+  shell: |
+    dmsetup remove linstor_{{ item.storage_pool }}-{{ item.pool_name }}_tmeta
+  register: remove_linstor_dm_tmeta
+  ignore_errors: true
+  when: item.type == "lvmthin"
+  with_items: "{{ _linstor.storage }}"
+
+
+- name: Print Device Mapper Status
+  shell: |
+    dmsetup status
+  register: print_dm_status
+  ignore_errors: true
+
