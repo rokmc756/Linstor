@@ -1,8 +1,8 @@
 ## What is Linstro?
-LINSTOR is an open-source software-defined storage solution that is typically used to manage DRBD replicated storage volumes.
+Linstor is an open-source software-defined storage solution that is typically used to manage DRBD replicated storage volumes.
 It provides both highly available and high performance volumes while focusing on operational simplicity.
 
-LINSTOR does not manage the underlying storage by itself and instead relies on other components such as ZFS or LVM to provision block devices.
+Linstor does not manage the underlying storage by itself and instead relies on other components such as ZFS or LVM to provision block devices.
 These block devices are then replicated using DRBD to provide fault tolerance and the ability to mount the volumes on any cluster node,
 regardless of its storage capabilities. Since volumes are replicated using the DRBD kernel module, the data path for the replication is kept
 entirely on kernel space, reducing its overhead when compared to solutions implemented in user space.
@@ -18,26 +18,34 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png" width="70%" height="70%">
 </p>
-LINBIT SDS manages various open source block storage technologies commonly found in modern Linux distributions to apply enterprise grade features such as encryption at rest, caching, and deduplication to storage volumes across storage clusters. The LINBIT SDS software consists of a single LINSTOR controller service, and usually many LINSTOR satellite service instances running within a cluster of nodes. The node running the LINSTOR controller service is responsible for managing the LINSTOR cluster configurations and orchestrating operations to be carried out on the nodes running a LINSTOR satellite service instance. LINSTOR satellite nodes in the cluster either provide or access LINSTOR managed storage directly. Satellites are also responsible for provisioning logical volumes and layering block storage technologies, as instructed by the user through configurations made against the LINSTOR controller. Most LINBIT SDS users are interested in using LINSTOR to manage DRBD devices, enabling synchronous and asynchronous replication, in their block storage.
-Once you’ve added physical devices to a LINBIT SDS cluster node, whether that node is a physical or virtual server in your local data center or a virtual server in the AWS cloud, management of the device and any logical volumes created from it are now handled from a single unified management plane – the LINSTOR controller node. The same is true for monitoring the block storage. LINBIT SDS exposes metrics about the cluster and the storage resources it manages which can be scraped by Prometheus which enables you to monitor storage across a hybrid cloud environment in a uniform manner. The LINBIT GUI for LINSTOR also offers users a single-pane of glass for observing and managing storage resources in the cluster.
+LINBIT SDS manages various open source block storage technologies commonly found in modern Linux distributions to apply enterprise grade features such as encryption at rest, caching, and deduplication to storage volumes across storage clusters.
+The LINBIT SDS software consists of a single Linstor controller service, and usually many Linstor satellite service instances running within a cluster of nodes.
+The node running the Linstor controller service is responsible for managing the Linstor cluster configurations and orchestrating operations to be carried out on the nodes running a Linstor satellite service instance.
+Linstor satellite nodes in the cluster either provide or access Linstor managed storage directly.
+Satellites are also responsible for provisioning logical volumes and layering block storage technologies, as instructed by the user through configurations made against the Linstor controller.
+Most LINBIT SDS users are interested in using Linstor to manage DRBD devices, enabling synchronous and asynchronous replication, in their block storage.
+Once you’ve added physical devices to a LINBIT SDS cluster node, whether that node is a physical or virtual server in your local data center or a virtual server in the AWS cloud, management of the device and any logical volumes created from it are now handled from a single unified management plane – the Linstor controller node. The same is true for monitoring the block storage.
+LINBIT SDS exposes metrics about the cluster and the storage resources it manages which can be scraped by Prometheus which enables you to monitor storage across a hybrid cloud environment in a uniform manner. The LINBIT GUI for Linstor also offers users a single-pane of glass for observing and managing storage resources in the cluster.
 
 ### Exos Integration
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png" width="70%" height="70%">
 </p>
-The Exos storage manager from Seagate could be configured as one large block device managed by LINSTOR® such as a local drive, but this would prevent concurrent sharing of LINSTOR resources between multiple servers out of the same pool.
-LINSTOR integration with Exos enables multiple server nodes to allocate and connect to LINSTOR resources serviced by the same Exos pool. Therefore all of the Exos storage management features such as SSD/HDD tiering, SSD caching, snapshots, and thin provisioning are available for LINSTOR resources and Kubernetes Storage Classes.
-After configuration, LINSTOR will dynamically map Resource replicas as LUNs presented to server nodes through one of the two Exos controllers.
-Since the Exos controllers are managed by a secure network API, LINSTOR must be configured with proper networking and username and password combination. The diagram below is showing the relationship between LINSTOR cluster and Exos Enclosures.
-Load balancing and server failover are managed & enabled by LINSTOR while volume creation is handled by the Exos hardware RAID engine.
-The Exos storage provider in LINSTOR offers native integration with Exos’ REST-API.
+The Exos storage manager from Seagate could be configured as one large block device managed by Linstor® such as a local drive, but this would prevent concurrent sharing of Linstor resources between multiple servers out of the same pool.
+Linstor integration with Exos enables multiple server nodes to allocate and connect to Linstor resources serviced by the same Exos pool. Therefore all of the Exos storage management features such as SSD/HDD tiering, SSD caching, snapshots,
+and thin provisioning are available for Linstor resources and Kubernetes Storage Classes.
+After configuration, Linstor will dynamically map Resource replicas as LUNs presented to server nodes through one of the two Exos controllers.
+Since the Exos controllers are managed by a secure network API, Linstor must be configured with proper networking and username and password combination.
+The diagram below is showing the relationship between Linstor cluster and Exos Enclosures.
+Load balancing and server failover are managed & enabled by Linstor while volume creation is handled by the Exos hardware RAID engine.
+The Exos storage provider in Linstor offers native integration with Exos’ REST-API.
 
 
 ## Linstor Ansible Playbook
 This Ansible Playbook provides the feature to build a Linstor Cluster on Baremetal, Virtual Machines.
 The main purposes of this project are simple to deploy Linstor Cluster quickly and interact with Incus Cluster and learn knowleges about it.
 If you're unfamiliar with Linstor, please refer to the
-[Introduction to LINSTOR section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
+[Introduction to Linstor section](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/#p-linstor-introduction)
 of the Linstor user's guide on https://linbit.com to learn more.
 
 System requirements:
@@ -102,9 +110,9 @@ ubt24-node09 ansible_ssh_host=192.168.1.89
 ~~ snip
 ```
 
-You can add a `controller` node to the `satellite` node group which will result in the node becoming a `Combined` node in the LINSTOR cluster.
+You can add a `controller` node to the `satellite` node group which will result in the node becoming a `Combined` node in the Linstor cluster.
 A `Combined` node will function both as a `controller` and as a `satellite` node.
-Add nodes to the `storage` node group to contribute block storage to the LINSTOR storage pool created by the playbook.
+Add nodes to the `storage` node group to contribute block storage to the Linstor storage pool created by the playbook.
 
 Also, before continuing, edit `group_vars/all.yaml` to configure the necessary variables for the playbook. For example:
 ```
@@ -114,7 +122,7 @@ ansible_ssh_pass: "changeme"
 ansible_become_pass: "changeme"
 ansible_ssh_private_key_file: ~/.ssh/ansible_key
 
-# LINSTOR variables
+# Linstor variables
 drbd_replication_network: 192.168.1.0/24
 
 # LINBIT Portal Variables
@@ -131,9 +139,9 @@ lb_clu_id: ""
 ~~ snip
 ```
 
-The `_linstor.storage` variable should be set to an unused block device that the LINSTOR satellite nodes will use if the nodes are also a part of the `storage` node group.
+The `_linstor.storage` variable should be set to an unused block device that the Linstor satellite nodes will use if the nodes are also a part of the `storage` node group.
 If you do not have an unused block device, do not add the node to the `storage` node group, and only a `file-thin` storage-pool will be configured instead.
-The `drbd_replication_network` is the network, in CIDR notation, that will be used by LINSTOR and DRBD. It is strongly recommended that the `drbd_replication_network` be separate from the management network in
+The `drbd_replication_network` is the network, in CIDR notation, that will be used by Linstor and DRBD. It is strongly recommended that the `drbd_replication_network` be separate from the management network in
 production systems to limit network traffic congestion, but it's not a hard requirement.
 
 When ready, run the make commands
@@ -202,6 +210,6 @@ Open web brower and type `http://<controller's ip address>:3370`
 
 ## Reference
 - For building Linstor RPM Packages from Sources - refer to [Build Linstor RPM Packages](https://github.com/rokmc756/Linstor/blob/main/BUILD-Linstor.md)
-- For more instructions for Kubernetes, OpenStack, Docker, or other integration - refer to [LINSTOR Documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
+- For more instructions for Kubernetes, OpenStack, Docker, or other integration - refer to [Linstor Documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
 - For more Linstore concepts and configurations - refer to [Linstor: Concepts and Configuration](https://brian-candler.medium.com/linstor-concepts-and-configuration-e5b0c8e10d27)
 
