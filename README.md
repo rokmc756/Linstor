@@ -136,7 +136,15 @@ If you do not have an unused block device, do not add the node to the `storage` 
 The `drbd_replication_network` is the network, in CIDR notation, that will be used by LINSTOR and DRBD. It is strongly recommended that the `drbd_replication_network` be separate from the management network in
 production systems to limit network traffic congestion, but it's not a hard requirement.
 
-When ready, run the `setup-temp.yml.tmp` playbook:
+When ready, run the make commands
+## Initialize or Uninitialize Linux Host to install packages required and generate/exchange ssh keys among all hosts.
+```sh
+make hosts r=init
+
+or
+make hosts r=uninit
+```
+
 ## Preapre or Clean Linstor Cluster such as Package Installation
 ```sh
 make cluster r=prepare
@@ -186,6 +194,10 @@ linstor resource list
 ```
 You should now have a DRBD device provisioned on a node in your cluster that you
 can use as you would any other block device.
+
+
+## Open Linstor Web Console
+Open web brower and type http://<controller ip address>:3370
 
 
 ## Reference
