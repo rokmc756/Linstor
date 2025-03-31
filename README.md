@@ -197,7 +197,7 @@ can use as you would any other block device.
 
 
 ## Open Linstor Web Console
-Open web brower and type http://<controller ip address>:3370
+Open web brower and type http://controller's ip address:3370
 
 
 ## Reference
