@@ -10,11 +10,11 @@
 
 
 - name: Install Linstor Satellite
-  import_tasks: install.yml
+  import_tasks: setup-satellite.yml
   tags: setup, create, install
 
 
 - name: Uninstall Linstor Satellite
-  import_tasks: uninstall.yml
+  import_tasks: remove-satellite.yml
   tags: remove, delete, uninstall
 

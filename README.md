@@ -161,43 +161,48 @@ production systems to limit network traffic congestion, but it's not a hard requ
 When ready, run the make commands
 ## Initialize or Uninitialize Linux Host to install packages required and generate/exchange ssh keys among all hosts.
 ```sh
-make hosts r=init
-
-or
-make hosts r=uninit
+make hosts r=init          # or uninit
 ```
 
 ## Preapre or Clean Linstor Cluster such as Package Installation
 ```sh
-make cluster r=prepare
-
-or
-make cluster r=clean
+make cluster r=prepare     # or clean
 ```
 
 ## Install or Uninstall Linstor Controller
 ```sh
-make controller r=install
-
-or
-make controller r=uninstall
+make controller r=install  # or uninstall
 ```
 
 ## Install or Uninstall Linstor Satellite
 ```sh
-make satellite r=install
-
-or
-make satellite r=uninstall
+make satellite r=install   # or uninstall
 ```
 
-## Install or Uninstall Linstor Storage Pools
+## Install Linstor Storage Pools
 ```sh
-make storage r=install
+make storage r=create s=lvmthin
+make storage r=create s=zfshin
+make storage r=create s=lvm
+make storage r=create s=zfs
+make storage r=create s=filethin
 
 or
-make storage r=uninstall
+make storage r=install s=all
 ```
+
+## Uninstall Linstor Storage Pools
+```sh
+make storage r=delete s=filethin
+make storage r=delete s=zfs
+make storage r=delete s=lvm
+make storage r=delete s=zfshin
+make storage r=delete s=lvmthin
+
+or
+make storage r=uninstall s=all
+```
+
 
 ## Testing Installation
 Shell into the controller node, and check that everything is setup:

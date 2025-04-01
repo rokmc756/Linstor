@@ -5,7 +5,11 @@
   register: remove_pvs
   ignore_errors: true
   when: item.type == "lvmthin"
-  with_items: "{{ _linstor.storage }}"
+  with_items:
+    - "{{ _storage.lvmthin }}"
+    - "{{ _storage.zfsthin }}"
+    - "{{ _storage.lvm }}"
+    - "{{ _storage.zfs }}"
 - debug: msg={{ remove_pvs }}
 
 
@@ -14,7 +18,11 @@
     dd if=/dev/zero of={{ item.storage_dev }} bs=4096 count=1 conv=notrunc
   register: purge_block_devices
   ignore_errors: true
-  with_items: "{{ _linstor.storage }}"
+  with_items:
+    - "{{ _storage.lvmthin }}"
+    - "{{ _storage.zfsthin }}"
+    - "{{ _storage.lvm }}"
+    - "{{ _storage.zfs }}"
 - debug: msg={{ purge_block_devices }}
 
 
@@ -23,7 +31,11 @@
     wipefs -a {{ item.storage_dev }}
   register: wipefs_nvme_devices
   ignore_errors: true
-  with_items: "{{ _linstor.storage }}"
+  with_items:
+    - "{{ _storage.lvmthin }}"
+    - "{{ _storage.zfsthin }}"
+    - "{{ _storage.lvm }}"
+    - "{{ _storage.zfs }}"
 - debug: msg={{ wipefs_nvme_devices }}
 
 
@@ -32,7 +44,11 @@
     sgdisk --zap-all --delete {{ item.storage_dev }}
   register: delete_zap_nvme_devices
   ignore_errors: true
-  with_items: "{{ _linstor.storage }}"
+  with_items:
+    - "{{ _storage.lvmthin }}"
+    - "{{ _storage.zfsthin }}"
+    - "{{ _storage.lvm }}"
+    - "{{ _storage.zfs }}"
 - debug: msg={{ delete_zap_nvme_devices }}
 
 
@@ -41,6 +57,10 @@
     blkdiscard {{ item.storage_dev }}
   register: discard_block_id
   ignore_errors: true
-  with_items: "{{ _linstor.storage }}"
+  with_items:
+    - "{{ _storage.lvmthin }}"
+    - "{{ _storage.zfsthin }}"
+    - "{{ _storage.lvm }}"
+    - "{{ _storage.zfs }}"
 - debug: msg={{ discard_block_id }}
 

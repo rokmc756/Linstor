@@ -1,20 +1,10 @@
 ---
-- name: Create DRBD Pool Volume Group for LINSTOR
-  lvg:
-    vg: drbdpool
-    pvs: "{{ drbd_backing_disk }}"
-
-
-- name: Create Thin LVM on DRBD Pool
-  lvol:
-    vg: drbdpool
-    thinpool: thinpool
-    size: 50%VG
-
-
-- name: Create the Storage Pool for lvm-thin
+- name: Create the LVM Thin Storage Pool
   shell: |
-    linstor storage-pool create lvmthin {{ ansible_nodename }} lvm-thin drbdpool/thinpool
-  register: storage_pool_create_result
-  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
+    linstor physical-storage create-device-pool --storage-pool {{ item.storage_pool }} \
+    --pool-name {{ item.pool_name }} {{ item.type }} {{ ansible_nodename }} {{ item.storage_dev }}
+  register: create_lvmthin_storage_pool
+  with_items: "{{ _storage.lvmthin }}"
+- debug: msg={{ create_lvmthin_storage_pool }}
+# failed_when: ( create_lvmthin_storage_pool.rc not in [ 0, 10 ] )
 

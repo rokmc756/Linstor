@@ -1,0 +1,52 @@
+---
+- name: Import LVM-Thin Storage Pool
+  import_tasks: create-lvmthin-storage-pool.yml
+  when: ( lvmthin is defined and lvmthin == true ) or ( storage_all is defined and storage_all == true )
+
+
+- name: Import ZFS-Thin Storage Pool
+  import_tasks: create-zfsthin-storage-pool.yml
+  when: ( zfsthin is defined and zfsthin == true ) or ( storage_all is defined and storage_all == true )
+
+
+- name: Import LVM Storage Pool
+  import_tasks: create-lvm-storage-pool.yml
+  when: ( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )
+
+
+- name: Import ZFS Storage Pool
+  import_tasks: create-zfs-storage-pool.yml
+  when: ( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )
+
+
+- name: Import File-Thin Storage Pool
+  import_tasks: create-filethin-storage-pool.yml
+  when: ( filethin is defined and filethin == true ) or ( storage_all is defined and storage_all == true )
+
+
+- name: Cancel Automatic Eviction
+  shell: |
+    linstor controller set-property DrbdOptions/AutoEvictAllowEviction
+  register: cancle_auto_evict
+  when: ( lvmthin is defined or zfsthin is defined or lvm is defined or zfs is defined or filethin is defined ) or ( storage_all is defined and storage_all == true )
+- debug: msg={{ cancle_auto_evict }}
+  when: ( lvmthin is defined or zfsthin is defined or lvm is defined or filethin is defined ) or ( storage_all is defined and storage_all == true )
+
+
+- name: Verify that All Storage Pools are Created and Report the Expected Size
+  shell: |
+    linstor resource-group list
+  register: verify_all_storage_pools
+  when: ( lvmthin is defined or zfsthin is defined or lvm is defined or zfs is defined or filethin is defined ) or ( storage_all is defined and storage_all == true )
+- debug: msg={{ verify_all_storage_pools }}
+  when: ( lvmthin is defined or zfsthin is defined or lvm is defined or filethin is defined ) or ( storage_all is defined and storage_all == true )
+
+
+- name: List All Storage Pools
+  shell: |
+    linstor storage-pool list
+  register: list_all_storage_pools
+  when: ( lvmthin is defined or zfsthin is defined or lvm is defined or zfs is defined or filethin is defined ) or ( storage_all is defined and storage_all == true )
+- debug: msg={{ list_all_storage_pools }}
+  when: ( lvmthin is defined or zfsthin is defined or lvm is defined or filethin is defined ) or ( storage_all is defined and storage_all == true )
+

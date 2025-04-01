@@ -1,0 +1,15 @@
+---
+_storage:
+    lvmthin:
+      - { storage_pool: 'lvmthin_pool01',  pool_name: 'lvmthin_pool01',  storage_dev: '/dev/nvme0n1', type: 'lvmthin' }
+    zfsthin:
+      - { storage_pool: 'zfsthin_pool02',  pool_name: 'zfsthin_pool02',  storage_dev: '/dev/nvme0n2', type: 'zfsthin' }
+    lvm:
+      - { storage_pool: 'lvm_pool01',      pool_name: 'lvm_pool01',      storage_dev: '/dev/sdb',     type: 'lvm' }
+    zfs:
+      - { storage_pool: 'zfs_pool02',      pool_name: 'zfs_pool02',      storage_dev: '/dev/sdc',     type: 'zfs' }
+    filethin:
+      - { storage_pool: 'filethin_pool01', pool_name: 'filethin_pool01', storage_dev: '/var/lib/linstor/file-thin-storage-pool01', type: 'filethin', mode: '0755' }
+      - { storage_pool: 'filethin_pool02', pool_name: 'filethin_pool02', storage_dev: '/var/lib/linstor/file-thin-storage-pool02', type: 'filethin', mode: '0755' }
+      - { storage_pool: 'filethin_pool03', pool_name: 'filethin_pool03', storage_dev: '/var/lib/linstor/file-thin-storage-pool03', type: 'filethin', mode: '0755' }
+

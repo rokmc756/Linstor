@@ -53,10 +53,7 @@
     daemon_reload: yes
     state: restarted
     enabled: yes
-
-
-#- name: Sleep for 30 Seconds and Continue with Play
-#  wait_for: timeout=30
+#- wait_for: timeout=30
 
 
 - name: Initialize the LINSTOR Control Node as Pure Controller

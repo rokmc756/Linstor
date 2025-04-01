@@ -1,0 +1,25 @@
+---
+- name: Delete the ZFS-Thin Storage Pool
+  shell: |
+    linstor storage-pool delete {{ ansible_nodename }} {{ item.storage_pool }}
+  register: delete_zfsthin_storage_pool
+  ignore_errors: true
+  with_items: "{{ _storage.zfsthin }}"
+# failed_when: ( delete_zfsthin_storage_pool.rc not in [ 0, 10 ] )
+
+
+- name: List Zpool
+  shell: |
+    zfs list -t all
+  register: list_linstor_zpool
+  ignore_errors: true
+  with_items: "{{ _storage.zfs }}"
+
+
+- name: Remove Linstor Zpool
+  shell: |
+    zpool destroy -f {{ item.storage_pool }}
+  register: remove_linstor_zpool
+  ignore_errors: true
+  with_items: "{{ _storage.zfsthin }}"
+

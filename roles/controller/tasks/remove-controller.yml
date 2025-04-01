@@ -22,10 +22,7 @@
   until: check_controller_status.stdout|int == 0
   retries: 12
   delay: 5
-
-
-#- name: Sleep for 30 Seconds and Continue with Play
-#  wait_for: timeout=30
+# wait_for: timeout=30
 
 
 - name: Disable and Stop LINSTOR Controller

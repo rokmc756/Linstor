@@ -6,25 +6,21 @@
 
 - name: Set Facts for Network and Packages Informations
   import_tasks: set-facts.yml
-  tags: install, uninstall, create, delete, setup, remove
-
-
-- name: Cleanup Block Devices
-  import_tasks: cleanup-devices.yml
-  tags: setup, create, install
+  tags: install, uninstall, create, delete, setup, remove, clean
 
 
 - name: Create Linstor Physical Storage Pool
-  import_tasks: create-physical-storage-pool.yml
+  import_tasks: create-storage-pool.yml
   tags: setup, create, install
 
 
 - name: Delete Linstor Physical Storage Pool
-  import_tasks: delete-physical-storage-pool.yml
+  import_tasks: delete-storage-pool.yml
   tags: remove, delete, uninstall
 
 
 - name: Cleanup Block Devices
   import_tasks: cleanup-devices.yml
-  tags: remove, delete, uninstall
+  tags: clean, destroy, uninstall
+  when: ( dev is defined and dev == true ) or ( storage_all is defined and storage_all == true )
 

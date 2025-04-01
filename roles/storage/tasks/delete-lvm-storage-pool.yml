@@ -1,0 +1,9 @@
+---
+- name: Delete the LVM Storage Pool
+  shell: |
+    linstor storage-pool delete {{ ansible_nodename }} {{ item.storage_pool }}
+  register: delete_lvm_storage_pool
+  ignore_errors: true
+  with_items: "{{ _storage.lvm }}"
+# failed_when: ( delete_lvm_storage_pool.rc not in [ 0, 10 ] )
+

@@ -1,0 +1,10 @@
+---
+- name: Create the ZFS Thin Storage Pool
+  shell: |
+    linstor physical-storage create-device-pool --storage-pool {{ item.storage_pool }} \
+    --pool-name {{ item.pool_name }} {{ item.type }} {{ ansible_nodename }} {{ item.storage_dev }}
+  register: create_zfsthin_storage_pool
+  with_items: "{{ _storage.zfsthin }}"
+- debug: msg={{ create_zfsthin_storage_pool }}
+# failed_when: ( create_zfsthin_storage_pool.rc not in [ 0, 10 ] )
+

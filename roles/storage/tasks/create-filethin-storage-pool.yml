@@ -1,14 +1,16 @@
 ---
 - name: Create thin File Backed Storage Pool Directory
   file:
-    path: /var/lib/linstor/file-thin-storage-pool
+    path: "{{ item.storage_dev }}"
     state: directory
-    mode: '0755'
+    mode: "{{ item.mode }}"
+  with_items: "{{ _storage.filethin }}"
 
 
 - name: Create the Storage Pool for File-Thin
   shell: |
-    linstor storage-pool create filethin {{ ansible_nodename }} file-thin /var/lib/linstor/file-thin-storage-pool
-  register: storage_pool_create_result
-  failed_when: ( storage_pool_create_result.rc not in [ 0, 10 ] )
+    linstor storage-pool create {{ item.type }} {{ ansible_nodename }} {{ item.storage_pool }} {{ item.storage_dev }}
+  register: create_filethin_storage_pool
+  with_items: "{{ _storage.filethin }}"
+# failed_when: ( create_filethin_storage_pool.rc not in [ 0, 10 ] )
 
