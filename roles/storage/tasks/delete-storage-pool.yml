@@ -1,26 +1,26 @@
 ---
 - name: Import LVM-Thin Storage Pool
-  import_tasks: delete-lvmthin-storage-pool.yml
+  import_tasks: ext/delete-lvmthin-storage-pool.yml
   when: ( lvmthin is defined and lvmthin == true ) or ( storage_all is defined and storage_all == true )
 
 
 - name: Import ZFS-Thin Storage Pool
-  import_tasks: delete-zfsthin-storage-pool.yml
+  import_tasks: ext/delete-zfsthin-storage-pool.yml
   when: ( zfsthin is defined and zfsthin == true ) or ( storage_all is defined and storage_all == true )
 
 
 - name: Import LVM Storage Pool
-  import_tasks: delete-lvm-storage-pool.yml
+  import_tasks: ext/delete-lvm-storage-pool.yml
   when: ( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )
 
 
 - name: Import ZFS Storage Pool
-  import_tasks: delete-zfs-storage-pool.yml
+  import_tasks: ext/delete-zfs-storage-pool.yml
   when: ( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )
 
 
 - name: Import File-Thin Storage Pool
-  import_tasks: delete-filethin-storage-pool.yml
+  import_tasks: ext/delete-filethin-storage-pool.yml
   when: ( filethin is defined and filethin == true ) or ( storage_all is defined and storage_all == true )
 
 
