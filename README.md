@@ -1,4 +1,4 @@
-## What is Linstro?
+### What is Linstro?
 Linstor is an open-source software-defined storage solution that is typically used to manage DRBD replicated storage volumes.
 It provides both highly available and high performance volumes while focusing on operational simplicity.
 
@@ -8,8 +8,8 @@ regardless of its storage capabilities. Since volumes are replicated using the D
 entirely on kernel space, reducing its overhead when compared to solutions implemented in user space.
 
 
-## Linstro Storage Architecture
-### Diagram
+### Linstro Storage Architecture
+#### Diagram
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-public-architecture.svg" width="70%" height="70%">
 </p>
@@ -22,7 +22,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
   - Alternatively, integrate the Linstor system into the storage architecture of other software systems, such as Kubernetes.
 
 
-### Abstracting block storage
+#### Abstracting block storage
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-internal-architecture.png" width="70%" height="70%">
 </p>
@@ -39,7 +39,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
   - It exposes metrics about the cluster and the storage resources it manages which can be scraped by Prometheus which enables you to monitor storage across a hybrid cloud environment in a uniform manner.
   - The Linstor GUI also offers users a single-pane of glass for observing and managing storage resources in the cluster.
 
-### Exos Integration
+#### Exos Integration
 <p align="center">
 <img src="https://github.com/rokmc756/Linstor/blob/main/roles/cluster/images/linstor-exos-integration.png" width="70%" height="70%">
 </p>
@@ -55,7 +55,7 @@ entirely on kernel space, reducing its overhead when compared to solutions imple
   - The Exos storage provider in Linstor offers native integration with Exos’ REST-API.
 
 
-## Linstor Ansible Playbook
+### Linstor Ansible Playbook
 This Ansible Playbook provides the feature to build a Linstor Cluster on Baremetal, Virtual Machines.
 The main purposes of this project are simple to deploy Linstor Cluster quickly and interact with Incus Cluster and learn knowleges about it.
 If you're unfamiliar with Linstor, please refer to the
@@ -72,7 +72,7 @@ of the Linstor user's guide on https://linbit.com to learn more.
   - At least a Normal User which has Sudo Privileges
 
 
-## Prepare ansible host to run this playbook
+### Prepare ansible host to run this playbook
 * MacOS
 ```!yaml
 $ xcode-select --install
@@ -81,22 +81,22 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 ```
 
 
-## Where is it originated?
+### Where is it originated?
 It has been developing based on the following project - https://github.com/LINBIT/linstor-ansible.
 Since above project is not useful to me I modified it with make utility and uninstall tasks for controller/satellite/storage.
 
 
-## Verified Linstor Version
+### Verified Linstor Version
 * Linstor 1.30.x
 
 
-## Supported Platform and OS
+### Supported Platform and OS
 * Virtual Machines
 * Baremetal
 * Ubuntu 24.x
 
 
-## Usage
+### Usage
 Add the target system information into the inventory file named `ansible-hosts-ubt24`.
 For example:
 ```
@@ -159,27 +159,27 @@ The `drbd_replication_network` is the network, in CIDR notation, that will be us
 production systems to limit network traffic congestion, but it's not a hard requirement.
 
 When ready, run the make commands
-## Initialize or Uninitialize Linux Host to install packages required and generate/exchange ssh keys among all hosts.
+### Initialize or Uninitialize Linux Host to install packages required and generate/exchange ssh keys among all hosts.
 ```sh
 make hosts r=init          # or uninit
 ```
 
-## Preapre or Clean Linstor Cluster such as Package Installation
+### Preapre or Clean Linstor Cluster such as Package Installation
 ```sh
 make cluster r=prepare     # or clean
 ```
 
-## Install or Uninstall Linstor Controller
+### Install or Uninstall Linstor Controller
 ```sh
 make controller r=install  # or uninstall
 ```
 
-## Install or Uninstall Linstor Satellite
+### Install or Uninstall Linstor Satellite
 ```sh
 make satellite r=install   # or uninstall
 ```
 
-## Install Linstor Storage Pools
+### Install Linstor Storage Pools
 ```sh
 make storage r=create s=lvmthin
 make storage r=create s=zfshin
@@ -191,12 +191,12 @@ or
 make storage r=install s=all
 ```
 
-## Uninstall Linstor Storage Pools
+### Uninstall Linstor Storage Pools
 ```sh
 make storage r=delete s=filethin
 make storage r=delete s=zfs
 make storage r=delete s=lvm
-make storage r=delete s=zfshin
+make storage r=delete s=zfsthin
 make storage r=delete s=lvmthin
 
 or
@@ -204,7 +204,7 @@ make storage r=uninstall s=all
 ```
 
 
-## Testing Installation
+### Testing Installation
 Shell into the controller node, and check that everything is setup:
 ```sh
 linstor node list; linstor storage-pool list
@@ -223,11 +223,11 @@ You should now have a DRBD device provisioned on a node in your cluster that you
 can use as you would any other block device.
 
 
-## Open Linstor Web Console
+### Open Linstor Web Console
 Open web brower and type `http://<controller's ip address>:3370`
 
 
-## Reference
+### Reference
 - For building Linstor RPM Packages from Sources - refer to [Build Linstor RPM Packages](https://github.com/rokmc756/Linstor/blob/main/BUILD-Linstor.md)
 - For more instructions for Kubernetes, OpenStack, Docker, or other integration - refer to [Linstor Documentation](https://linbit.com/drbd-user-guide/linstor-guide-1_0-en/).
 - For more Linstore concepts and configurations - refer to [Linstor: Concepts and Configuration](https://brian-candler.medium.com/linstor-concepts-and-configuration-e5b0c8e10d27)

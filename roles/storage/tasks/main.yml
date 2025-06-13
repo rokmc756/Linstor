@@ -20,7 +20,7 @@
 
 
 - name: Cleanup Block Devices
-  import_tasks: cleanup-devices.yml
+  import_tasks: ext/cleanup-devices.yml
   tags: clean, destroy, uninstall
   when: ( dev is defined and dev == true ) or ( storage_all is defined and storage_all == true )
 
