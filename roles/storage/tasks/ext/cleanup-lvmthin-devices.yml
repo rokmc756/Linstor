@@ -1,0 +1,52 @@
+---
+- name: Remove Physical Volumes
+  shell: |
+    pvremove -y -ff {{ item.storage_dev }}
+  register: remove_pvs
+  ignore_errors: true
+  when: item.type == "lvmthin"
+  with_items:
+    - "{{ _storage.lvmthin }}"
+- debug: msg={{ remove_pvs }}
+
+
+- name: Purge Block Devices
+  shell: |
+    dd if=/dev/zero of={{ item.storage_dev }} bs=4096 count=1 conv=notrunc
+  register: purge_block_devices
+  ignore_errors: true
+  with_items:
+    - "{{ _storage.lvmthin }}"
+- debug: msg={{ purge_block_devices }}
+
+
+- name: Wipe Filesystem in NVME Devices
+  shell: |
+    wipefs -a {{ item.storage_dev }}
+  register: wipefs_nvme_devices
+  ignore_errors: true
+  with_items:
+    - "{{ _storage.lvmthin }}"
+- debug: msg={{ wipefs_nvme_devices }}
+
+
+- name: Delete Zap in NVME Devices
+  shell: |
+    sgdisk --zap-all --delete {{ item.storage_dev }}
+  register: delete_zap_nvme_devices
+  ignore_errors: true
+  with_items:
+    - "{{ _storage.lvmthin }}"
+- debug: msg={{ delete_zap_nvme_devices }}
+
+
+- name: Discard Block ID
+  shell: |
+    blkdiscard {{ item.storage_dev }}
+  register: discard_block_id
+  ignore_errors: true
+  with_items:
+    - "{{ _storage.lvmthin }}"
+- debug: msg={{ discard_block_id }}
+
+

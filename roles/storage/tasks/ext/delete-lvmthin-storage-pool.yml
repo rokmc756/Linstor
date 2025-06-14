@@ -5,6 +5,7 @@
   register: delete_lvmthin_storage_pool
   ignore_errors: true
   with_items: "{{ _storage.lvmthin }}"
+- debug: msg={{ delete_lvmthin_storage_pool }}
 # failed_when: ( delete_lvmthin_storage_pool.rc not in [ 0, 10 ] )
 
 
@@ -14,6 +15,7 @@
   register: remove_linstor_dm
   ignore_errors: true
   with_items: "{{ _storage.lvmthin }}"
+- debug: msg={{ remove_linstor_dm }}
 
 
 #- name: Remove Linstor Device Mapper Tpool
@@ -22,6 +24,7 @@
 #  register: remove_linstor_dm_tpool
 #  ignore_errors: true
 #  with_items: "{{ _storage.lvmthin }}"
+#- debug: msg={{ remove_linstor_dm_tpool }}
 
 
 - name: Remove Linstor Device Mapper Tdata
@@ -30,6 +33,7 @@
   register: remove_linstor_dm_tdata
   ignore_errors: true
   with_items: "{{ _storage.lvmthin }}"
+- debug: msg={{ remove_linstor_dm_tdata }}
 
 
 - name: Remove Linstor Device Mapper Tmeta
@@ -38,4 +42,10 @@
   register: remove_linstor_dm_tmeta
   ignore_errors: true
   with_items: "{{ _storage.lvmthin }}"
+- debug: msg={{ remove_linstor_dm_tmeta }}
+
+
+- name: Cleanup Block Devices
+  import_tasks: ext/cleanup-lvmthin-devices.yml
+  ignore_errors: true
 

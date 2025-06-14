@@ -1,0 +1,85 @@
+---
+- name: Gather Facts from Controller ( Needed when Playbook -- Limit Excludes Controller )
+  setup:
+  delegate_to: "{{item}}"
+  delegate_facts: True
+  loop: "{{ groups['controller'] }}"
+
+
+- name: Setup linstor-client.conf
+  template: src=linstor-client.j2 dest=/etc/linstor/linstor-client.conf
+
+
+- name: Check if Firewalld is Running ( RHEL )
+  shell: systemctl status firewalld
+  register: firewalld
+  failed_when: ( firewalld.rc not in [ 0, 3, 4 ] )
+  when: ansible_os_family == 'RedHat'
+
+
+- name: The Firewalld Ports for LINSTOR Satellite
+  firewalld:
+    port: 3366/tcp
+    permanent: true
+    immediate: true
+    state: enabled
+  when: firewalld.rc is defined and firewalld.rc == 0
+
+
+- name: The Firewalld Ports for DRBD
+  firewalld:
+    port: 7000-8000/tcp
+    permanent: true
+    immediate: true
+    state: enabled
+  when: firewalld.rc is defined and firewalld.rc == 0
+
+
+- name: Check if UFW is Running (Ubuntu)
+  shell: ufw status
+  changed_when: false
+  register: ufw
+  when: ansible_os_family == 'Debian'
+
+
+- name: The UFW Ports for DRBD
+  ufw:
+    rule: allow
+    proto: tcp
+    port: 7000:8000
+  when: ufw.rc is defined and 'inactive' not in ufw.stdout
+
+
+- name: The UFW Ports for LINSTOR Satellite
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "3366"
+  when: ufw.rc is defined and 'inactive' not in ufw.stdout
+
+
+- name: Enable and Start LINSTOR Satellite
+  systemd:
+    name: linstor-satellite.service
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+
+
+- name: Join LINSTOR Cluster as Satellite Node
+  shell: |
+    linstor node create {{ ansible_nodename }} {{ ansible_all_ipv4_addresses | ipaddr(drbd_replication_network) | first }} \
+    --node-type satellite
+  register: linstor_create_result
+  failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
+
+
+- name: Check Satellite is Online
+  shell: |
+    linstor node list | grep SATELLITE  | grep Online | wc -l
+  register: check_satellite_status
+  until: check_satellite_status.stdout|int == 3
+  retries: 12
+  delay: 5
+
+

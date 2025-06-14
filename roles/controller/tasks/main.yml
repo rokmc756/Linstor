@@ -6,15 +6,29 @@
 
 - name: Set Facts for Network and Packages Informations
   import_tasks: set-facts.yml
-  tags: install, uninstall, enable, disable, create, delete
+  tags: install, uninstall, enable, disable, create, delete, setup, remove
+
+
+- name: Enable Firewall
+  import_tasks: enable-firewall.yml
+  tags: enable, install
+  when: ( firewall is defined and firewall == true ) or ( controller_all is defined and controller_all == true )
 
 
 - name: Install Linstor Controller
   import_tasks: setup-controller.yml
-  tags: setup, create, install
+  tags: setup, install
+  when: ( service is defined and service == true ) or ( controller_all is defined and controller_all == true )
 
 
 - name: Uninstall Linstor Controller
   import_tasks: remove-controller.yml
-  tags: remove, delete, uninstall
+  tags: remove, uninstall
+  when: ( service is defined and service == true ) or ( controller_all is defined and controller_all == true )
+
+
+- name: Disable Firewall
+  import_tasks: disable-firewall.yml
+  tags: disable, uninstall
+  when: ( firewall is defined and firewall == true ) or ( controller_all is defined and controller_all == true )
 

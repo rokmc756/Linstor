@@ -169,14 +169,40 @@ make hosts r=init          # or uninit
 make cluster r=prepare     # or clean
 ```
 
-### Install or Uninstall Linstor Controller
+### Install Linstor Controller
 ```sh
-make controller r=install  # or uninstall
+make controller r=enable s=firewall
+make controller r=setup  s=service
+
+or
+make controller r=install s=all
 ```
 
-### Install or Uninstall Linstor Satellite
+### Install Linstor Controller
 ```sh
-make satellite r=install   # or uninstall
+make controller r=remove  s=service
+make controller r=disable s=firewall
+
+or
+make controller r=uninstall s=all
+```
+
+### Install Linstor Satellite
+```sh
+make satellite r=enable s=firewall
+make satellite r=setup  s=service
+
+or
+make satellite r=install s=all
+```
+
+### Uninstall Linstor Satellite
+```sh
+make satellite r=remove  s=service
+make satellite r=disable s=firewall
+
+or
+make satellite r=uninstall s=all
 ```
 
 ### Install Linstor Storage Pools

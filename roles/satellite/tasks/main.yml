@@ -9,12 +9,26 @@
   tags: install, uninstall, create, delete, enable, disable, setup, remove
 
 
+- name: Enable Firewall
+  import_tasks: enable-firewall.yml
+  tags: enable, install
+  when: ( firewall is defined and firewall == true ) or ( satellite_all is defined and satellite_all == true )
+
+
 - name: Install Linstor Satellite
   import_tasks: setup-satellite.yml
-  tags: setup, create, install
+  tags: setup, install
+  when: ( service is defined and service == true ) or ( satellite_all is defined and satellite_all == true )
 
 
 - name: Uninstall Linstor Satellite
   import_tasks: remove-satellite.yml
-  tags: remove, delete, uninstall
+  tags: remove, uninstall
+  when: ( service is defined and service == true ) or ( satellite_all is defined and satellite_all == true )
+
+
+- name: Disable Firewall
+  import_tasks: disable-firewall.yml
+  tags: disable, uninstall
+  when: ( firewall is defined and firewall == true ) or ( satellite_all is defined and satellite_all == true )
 

@@ -7,3 +7,8 @@
   with_items: "{{ _storage.lvm }}"
 # failed_when: ( delete_lvm_storage_pool.rc not in [ 0, 10 ] )
 
+
+- name: Cleanup Block Devices
+  import_tasks: ext/cleanup-lvm-devices.yml
+  ignore_errors: true
+

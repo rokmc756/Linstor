@@ -1,0 +1,91 @@
+---
+- name: Delete the LINSTOR Control Node as a Combined Type
+  shell: |
+    linstor node delete {{ ansible_nodename }}
+  register: linstor_delete_result
+  failed_when: ( linstor_delete_result.rc not in [ 0, 10 ] )
+  when: "'satellite' in group_names"
+
+
+- name: Delete the LINSTOR Control Node as Pure Controller
+  shell: |
+    linstor node delete {{ ansible_nodename }}
+  register: linstor_create_result
+  failed_when: ( linstor_create_result.rc not in [ 0, 10 ] )
+  when: "'satellite' not in group_names"
+
+
+- name: Check Controller is Deleted
+  shell: |
+    linstor node list | grep CONTROLLER | wc -l
+  register: check_controller_status
+  until: check_controller_status.stdout|int == 0
+  retries: 12
+  delay: 5
+# wait_for: timeout=30
+
+
+- name: Disable and Stop LINSTOR Controller
+  systemd:
+    name: linstor-controller.service
+    daemon_reload: yes
+    state: stopped
+    enabled: no
+
+
+- name: Sleep for 30 Seconds and Continue with Play
+  shell: |
+    linstor node list 2>&1 | awk '{print $10}'
+  register: check_controller_status
+  until: check_controller_status.stdout.find("refused") != -1
+  retries: 12
+  delay: 5
+
+
+- name: The UFW Ports for LINSTOR Controller REST Client Connections
+  ufw:
+    rule: deny
+    proto: tcp
+    port: "3370"
+  when: ufw.rc is defined and 'inactive' not in ufw.stdout
+
+
+- name: The UFW Ports for LINSTOR Controller/Satellite Connections
+  ufw:
+    rule: deny
+    proto: tcp
+    port: "3376"
+  when: ufw.rc is defined and 'inactive' not in ufw.stdout
+
+
+- name: Check if UFW is Running (Ubuntu)
+  shell: ufw status
+  changed_when: false
+  register: ufw
+  when: ansible_os_family == 'Debian'
+
+
+- name: Firewalld Ports for LINSTOR Controller REST Client Connections
+  firewalld:
+    port: 3370/tcp
+    permanent: true
+    immediate: true
+    state: disabled
+  when: firewalld.rc is defined and firewalld.rc == 0
+
+
+- name: Firewalld Ports for LINSTOR Controller/Satellite Connections
+  firewalld:
+    port: 3376/tcp
+    permanent: true
+    immediate: true
+    state: disabled
+  when: firewalld.rc is defined and firewalld.rc == 0
+
+
+- name: Check if Firewalld is Running ( RHEL )
+  shell: systemctl status firewalld
+  register: firewalld
+  failed_when: ( firewalld.rc not in [ 0, 3, 4 ] )
+  when: ansible_os_family == 'RedHat'
+
