@@ -80,7 +80,6 @@ $ brew install ansible
 $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 ```
 
-
 ### Where is it originated?
 It has been developing based on the following project - https://github.com/LINBIT/linstor-ansible.
 Since above project is not useful to me I modified it with make utility and uninstall tasks for controller/satellite/storage.
@@ -160,17 +159,17 @@ production systems to limit network traffic congestion, but it's not a hard requ
 
 When ready, run the make commands
 ### Initialize or Uninitialize Linux Host to install packages required and generate/exchange ssh keys among all hosts.
-```sh
+```bash
 $ make hosts r=init          # or uninit
 ```
 
 ### Preapre or Clean Linstor Cluster such as Package Installation
-```sh
+```bash
 $ make cluster r=prepare     # or clean
 ```
 
 ### Install Linstor Controller
-```sh
+```bash
 $ make controller r=enable s=firewall
 $ make controller r=setup  s=service
 
@@ -179,7 +178,7 @@ $ make controller r=install s=all
 ```
 
 ### Install Linstor Controller
-```sh
+```bash
 $ make controller r=remove  s=service
 $ make controller r=disable s=firewall
 
@@ -188,7 +187,7 @@ $ make controller r=uninstall s=all
 ```
 
 ### Install Linstor Satellite
-```sh
+```bash
 $ make satellite r=enable s=firewall
 $ make satellite r=setup  s=service
 
@@ -197,7 +196,7 @@ $ make satellite r=install s=all
 ```
 
 ### Uninstall Linstor Satellite
-```sh
+```bash
 $ make satellite r=remove  s=service
 $ make satellite r=disable s=firewall
 
@@ -206,7 +205,7 @@ $ make satellite r=uninstall s=all
 ```
 
 ### Install Linstor Storage Pools
-```sh
+```bash
 $ make storage r=create s=lvmthin
 $ make storage r=create s=zfshin
 $ make storage r=create s=lvm
@@ -218,7 +217,7 @@ $ make storage r=install s=all
 ```
 
 ### Uninstall Linstor Storage Pools
-```sh
+```bash
 $ make storage r=delete s=filethin
 $ make storage r=delete s=zfs
 $ make storage r=delete s=lvm
@@ -232,12 +231,12 @@ $ make storage r=uninstall s=all
 
 ### Testing Installation
 Shell into the controller node, and check that everything is setup:
-```sh
+```bash
 $ linstor node list; linstor storage-pool list
 ```
 Create and deploy a resource:
 
-```sh
+```bash
 $ linstor resource-definition create test-res-0
 $ linstor volume-definition create test-res-0 100MiB
 $ linstor resource create \
